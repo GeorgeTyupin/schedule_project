@@ -25,7 +25,7 @@
     </div>
 
     <div class="head">
-        <button class="create-event">Создать событие</button>
+        <button class="create-event btn">Создать событие</button>
     </div>
     
     <div class="row">
@@ -48,22 +48,12 @@
 
         {% raw %}
             <div id="prev" class="col">
-                <div class="open-days">
-                    <div class="open day">
-                        <h1>{{open_day['day']}}</h1>
-                        <div class="events-list">
-                            <div class="event"></div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="close-days">
-                    <div v-for="close_day in close_days" class="day">
-                        <h1>{{close_day['day']}}</h1>
+                <div class="days">
+                    <div v-for="day in days" class="day">
+                        <h1 class="day-title">{{day['day']}}</h1>
                         <div class="events-list"></div>
                     </div>
                 </div>
-                
             </div>
         {% endraw %}
     </div>

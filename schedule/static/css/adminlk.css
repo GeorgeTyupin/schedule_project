@@ -17,8 +17,6 @@ body {
 
 #prev {
     padding: 2rem;
-    display: flex;
-    justify-content: space-between;
 }
 
 .menu {
@@ -46,64 +44,63 @@ body {
 
 .day {
     background-color: #fff;
+    width: 12rem;
+    height: 4rem;
     border-radius: 17px;
-    width: 15rem;
-    display: flex;
     flex-direction: column;
     align-items: center;
-    height: 12rem;
+    text-align: center;
     padding-top: 1rem;
     transition-duration: 0.2s;
     transition-property: height;
+    cursor: pointer;
 }
 
-.open {
-    height: 65%;
-    transition-duration: 0.2s;
+.day:hover {
+    transform: scale(1.1);
+    transition: .3s;
 }
 
-.day span {
+.open-day {
+    width: 14rem;
+    height: 20rem;
+}
+
+.day-title {
+    font-size: 1.6rem;
     font-family: 'Manrope', sans-serif;
-    font-size: 1.5rem;
 }
 
-.day h1 {
-    font-size: 2rem;
-    font-family: 'Manrope', sans-serif;
-}
-
-.open-days, .close-days {
+.days {
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
     flex-wrap: wrap;
 }
 
-.close-days .day {
-    margin-left: 4rem;
-    margin-right: 4rem;
-}
-
 .create-event {
-    background-color: #D52388;
     width: 10rem;
-    height: 2rem;
-    color: #FFE9EA;
+    height: 2.3rem;
     font-size: 1rem;
-    border: none;
-    cursor: pointer;
     font-family: 'Manrope', sans-serif;
     margin-top: auto;
     margin-bottom: auto;
     border-radius: 10px;
     margin-left: 20px;
-    text-align: center;
-    outline: none !important;
 }
 
-.create-event:hover {
+.btn:hover {
     font-size: 1.1rem;
     transform: scale(1.1);
     transition: .3s;
+}
+
+.btn {
+    color: #FFE9EA;
+    background-color: #D52388;
+    border: none;
+    cursor: pointer;
+    outline: none !important;
+    text-align: center;
 }
 
 .background-form {
@@ -181,9 +178,11 @@ body {
 }
 
 .event {
-    width: 12rem;
-    height: 2.6rem;
-    margin-top: 10px;
+    width: 11rem;
+    height: 2rem;
+    margin-top: 15px;
+    margin-left: auto;
+    margin-right: auto;
     background-color: #D6D6D6;
     border-radius: 10px;
 }
