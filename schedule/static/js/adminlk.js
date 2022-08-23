@@ -1,3 +1,10 @@
+data = {};
+/*
+========================================================================================================
+РАБОТА НА СТРАНИЧКЕ
+======================================================================================================== 
+*/
+
 var days = new Vue({
    el: '#prev',
    data: {
@@ -42,14 +49,15 @@ var days = new Vue({
  });
 
 function dayOpenClose(target) {
+   events = $($(target).children()).children();
    if (target.className == 'day') {
       target.classList.add('open-day');
-      for (let i = 1; i < $(target).children().length; i++) {
-         $(target).children()[i].classList.remove('hide');
+      for (let i = 0; i < events.length; i++) {
+         events[i].classList.remove('hide');
       }
    } else {
-      for (let i = 1; i < $(target).children().length; i++) {
-         $(target).children()[i].classList.add('hide');
+      for (let i = 0; i < events.length; i++) {
+         events[i].classList.add('hide');
       }
       target.classList.remove('open-day');
    }
@@ -65,19 +73,63 @@ function closeEventArea() {
    document.querySelector('.background-form').classList.add('hide');
 }
 
- function addEvent() {
-   event_name = document.querySelector('.form-input-name').value;
-   event_day = document.querySelector('.form-input-day').value;
+function addEvent() {
+   data['event_name'] = document.querySelector('.form-input-name').value;
+   data['event_day'] = document.querySelector('.form-input-day').value;
+   data['event-description'] = document.querySelector('.form-description').value;
    document.querySelectorAll('.day').forEach((day) => {
-      if (day.childNodes[0].innerText.toLowerCase() == event_day.toLowerCase()) {
-         if (day.className == 'day') {
-            dayOpenClose(day);
-         }
-         $(day.childNodes[2]).append(`<div class="event">${event_name}</div>`);
-      };
-   });
- }
+     if (day.childNodes[0].innerText.toLowerCase() == data['event_day'].toLowerCase()) {
+        if (day.className == 'day') {
+           dayOpenClose(day);
+           sendingEvents(data);
+        }
+        $(day.childNodes[2]).append(`<div class="event">${data['event_name']}</div>`);
+     };
+  });
+}
 
+
+
+/*
+========================================================================================================
+РЕНДЕРИНГ ДАННЫХ С СЕРВЕРА НА СТРАНИЧКЕ
+========================================================================================================
+*/
+function renderEvents(response) {
+   response.forEach((event) => {
+      console.log(event)
+      document.querySelectorAll('.day').forEach((day) => {
+         if (day.childNodes[0].innerText == event[3]) {
+            $(day.childNodes[2]).append(`<div class="event hide">${event[1]}</div>`);
+         };
+      });
+   });
+}
+
+
+
+/*
+========================================================================================================
+РАБОТА С СЕРВЕРОМ
+========================================================================================================
+*/
+function sendingEvents(data) {
+   $.post("/", data, success = function(response) {});
+}
+
+function getData() {
+   $.post("/getdata", 'hello', success = function(response) {
+      renderEvents(JSON.parse(response));
+	});
+}
+
+
+
+/*
+========================================================================================================
+ВЫЗОВ ФУНКЦИЙ
+========================================================================================================
+*/
 function main() {
    document.querySelectorAll('.day').forEach((day) => {
       day.addEventListener('click', () => {
@@ -88,6 +140,7 @@ function main() {
    $('.form-close').click(closeEventArea);
    $('.form-submit').click(closeEventArea);
    $('.form-submit').click(addEvent);
+   getData();
 }
 
 document.addEventListener('DOMContentLoaded', main);
