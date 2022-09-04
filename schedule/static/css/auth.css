@@ -1,0 +1,76 @@
+body {
+   background-color: #E7E7E7;
+   z-index: 1;
+}
+
+h1 {
+   color: #FAF7F7;
+}
+
+input {
+   background-color: #FAF7F7;
+   width: 17rem;
+   height: 2.8rem;
+   margin-top: auto;
+   margin-bottom: auto;
+   border-radius: 12px;
+}
+
+a {
+   font-size: 1.5rem;
+   width: 17rem;
+   height: 2.5rem;
+   margin-left: 1.5rem;
+}
+
+a:hover {
+   color: #FAF7F7;
+}
+
+.auth-block {
+   margin-top: 7%;
+   margin-left: auto;
+   margin-right: auto;
+   width: 50rem;
+   height: 35rem;
+   border-radius: 17px;
+   background-color: #7D3AD4;;
+}
+
+.login-block, .password-block {
+   padding-top: 15%;
+   margin-left: auto;
+   margin-right: auto;
+   width: 40rem;
+}
+
+.password-block {
+   padding-top: 7% !important;
+}
+
+.auth-submit {
+   margin-left: auto !important;
+   margin-right: auto !important;
+   height: 2.5rem !important;
+   width: 12rem;
+}
+
+.auth-submit-block {
+   padding-top: 13%;
+   text-align: center;
+}
+
+.redirect-block {
+   padding-top: 5%;
+   text-align: center;
+}
+
+.redirect-reg {
+   font-size: 1.5rem;
+   color: #FAF7F7;
+   font-style: italic;
+}
+
+.btn {
+   font-size: 1.2rem !important;
+}

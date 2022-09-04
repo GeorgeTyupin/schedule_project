@@ -84,7 +84,6 @@ body {
     font-family: 'Manrope', sans-serif;
     margin-top: auto;
     margin-bottom: auto;
-    border-radius: 10px;
     margin-left: 20px;
 }
 
@@ -95,12 +94,14 @@ body {
 }
 
 .btn {
+    border-radius: 10px;
     color: #FFE9EA;
     background-color: #D52388;
     border: none;
     cursor: pointer;
     outline: none !important;
     text-align: center;
+    vertical-align: middle
 }
 
 .background-form {
@@ -185,4 +186,15 @@ body {
     margin-right: auto;
     background-color: #D6D6D6;
     border-radius: 10px;
+}
+
+
+.registration-block {
+    margin-left: 70%;
+}
+
+.auth, .reg {
+    margin: 6px;
+    color: #FFE9EA !important;
+    border: none !important;
 }

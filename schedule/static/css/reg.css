@@ -1,0 +1,63 @@
+body {
+   background-color: #E7E7E7;
+   z-index: 1;
+}
+
+h1 {
+   color: #FAF7F7;
+}
+
+input {
+   background-color: #FAF7F7;
+   width: 17rem;
+   height: 2.8rem;
+   margin-top: auto;
+   margin-bottom: auto;
+   border-radius: 12px;
+}
+
+a {
+   width: 17rem;
+   height: 2.6rem;
+   margin-left: 1.5rem;
+}
+
+a:hover {
+   color: #FAF7F7;
+}
+
+.reg-block {
+   margin-top: 7%;
+   margin-left: auto;
+   margin-right: auto;
+   width: 50rem;
+   height: 35rem;
+   border-radius: 17px;
+   background-color: #7D3AD4;;
+}
+
+.login-block, .password-block, .email-block {
+   padding-top: 12%;
+   margin-left: auto;
+   margin-right: auto;
+   width: 40rem;
+}
+
+.password-block, .email-block {
+   padding-top: 6% !important;
+}
+
+.reg-submit {
+   margin-left: auto !important;
+   margin-right: auto !important;
+   height: 2.5rem !important;
+}
+
+.reg-submit-block {
+   padding-top: 10%;
+   text-align: center;
+}
+
+.btn {
+   font-size: 1.2rem !important;
+}

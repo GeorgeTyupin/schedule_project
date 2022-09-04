@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Регистрация</title>
+   <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Manrope" rel="stylesheet"> 
+   <link rel="stylesheet" href="../static/css/reg.css">
+   <link rel="stylesheet" href="../static/css/adminlk.css">
+</head>
+<body>
+   <form class="reg-block" action="/reg" method="post">
+      <div class="login-block row">
+         <h1 class="col-4">Логин</h1>
+         <input class="col-8" type="text" name="user_name">
+      </div>
+      <div class="email-block row">
+         <h1 class="col-4">Email</h1>
+         <input class="col-8" type="text" name="user_email">
+      </div>
+      <div class="password-block row">
+         <h1 class="col-4">Пароль</h1>
+         <input class="col-8" type="password" name="user_password">
+      </div>
+      <div class="reg-submit-block">
+         <input type="submit" class="reg-submit btn" value="Зарегестрироваться">
+         <a href="/" class="btn">Вернуться на главную</a>
+      </div>
+   </form>
+</body>
+</html>
