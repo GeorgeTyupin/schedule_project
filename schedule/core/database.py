@@ -7,20 +7,23 @@ class Database():
    def __init__(self):
       print('init database')
 
-   # def insert(self, table_name, data):
-   #    return f"""INSERT INTO {table_name} ({data['columns']}) 
-   #       VALUES ('{data["values"]}')"""
+   def insert(self, table_name, data):
+      columns = "' , '".join(data.keys())
+      values = "' , '".join(data.values())
+      sql =  f"""INSERT INTO {table_name} ('{columns}') 
+         VALUES ('{values}')"""
+      return sql
 
    def addEvent(self, data, author_id):
       with sqlite3.connect(DATA_DST) as cur:
-         # values = {}
-         sql = f"""INSERT INTO events ('name' , 'author_id', 'date', 'time', 'description') 
-            VALUES ('{data['event_name']}','{author_id}','{data['event_day']}','{time.time()}','{data['event-description']}')"""
-         # values['columns'] = 'name' , 'author_id', 'date', 'time', 'description'
-         # values["values"] = f"{data['event_name']}','{author_id}','{data['event_day']}','{time.time()}','{data['event-description']}"
-         # event = self.insert('events', values)
-         # cur.execute(event)
-         cur.execute(sql)
+         values = {
+            'name' : data['event_name'],
+            'author_id' : str(author_id),
+            'date' : data['event_day'],
+            'time' : str(time.time()),
+            'description' : data['event-description']
+         }
+         cur.execute(self.insert('events', values))
          cur.commit()
 
    def loadEventsTable(self, author_id):
@@ -41,4 +44,17 @@ class Database():
             VALUES ('{login}','{password}','{email}')"""
          cur.execute(sql)
          cur.commit()
-    
+
+   def updateEvents(self, data):
+      with sqlite3.connect(DATA_DST) as cur:
+         sql = f"""UPDATE events 
+            SET name = '{data['new_name']}'
+            WHERE id = '{data['event_id']}' """
+         cur.execute(sql)
+         cur.commit()
+   
+   def deleteEvents(self, event_id):
+      with sqlite3.connect(DATA_DST) as cur:
+         sql = f"""DELETE FROM event WHERE id = {event_id}"""
+         cur.execute(sql)
+         cur.commit()

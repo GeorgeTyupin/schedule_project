@@ -52,14 +52,16 @@ function dayOpenClose(target) {
    events = $($(target).children()).children();
    if (target.className == 'day') {
       target.classList.add('open-day');
+      $(target).children()[1].classList.remove('hide');
       for (let i = 0; i < events.length; i++) {
          events[i].classList.remove('hide');
       }
    } else {
+      $(target).children()[1].classList.add('hide');
       for (let i = 0; i < events.length; i++) {
          events[i].classList.add('hide');
       }
-      target.classList.remove('open-day');
+      target.classList.remove('open-day');   
    }
 }
 
@@ -89,6 +91,11 @@ function addEvent() {
 }
 
 
+function changeEvent(event) {
+   console.log("event")
+}
+
+
 
 /*
 ========================================================================================================
@@ -97,10 +104,10 @@ function addEvent() {
 */
 function renderEvents(response) {
    response.forEach((event) => {
-      console.log(event)
       document.querySelectorAll('.day').forEach((day) => {
-         if (day.childNodes[0].innerText == event[3]) {
-            $(day.childNodes[2]).append(`<div class="event hide">${event[1]}</div>`);
+         if (day.childNodes[0].innerText.toLowerCase() == event[3].toLowerCase()) {
+            console.log(day.childNodes)
+            $(day.childNodes[4]).append(`<div class="event hide">${event[1]}</div>`);
          };
       });
    });
@@ -123,6 +130,12 @@ function getData() {
 	});
 }
 
+function signOut() {
+   $.post("/exit", data, success = function(response) {
+      document.location.href = "/auth"
+   });
+}
+
 
 
 /*
@@ -136,10 +149,15 @@ function main() {
          dayOpenClose(day);
       });
    });
+   console.log(document.getElementsByClassName('event'))
+   $('.event').click(function(event) {
+      console.log(event);
+   });
    $('.create-event').click(createEventArea);
    $('.form-close').click(closeEventArea);
    $('.form-submit').click(closeEventArea);
    $('.form-submit').click(addEvent);
+   $('.exit').click(signOut);
    getData();
 }
 

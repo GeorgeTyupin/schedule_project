@@ -62,3 +62,8 @@ def reg():
 @app.route("/getdata", methods=['GET', 'POST'])
 def getdata():
     return json.dumps(db.loadEventsTable(session['id']))
+
+@app.route("/exit", methods=['GET', 'POST'])
+def exit():
+    session = {}
+    return ''

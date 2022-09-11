@@ -22,13 +22,20 @@
                 <input class="form-submit" type="submit" value="Сохранить">
             <button class="form-close">Отмена</button>
         </div>
+
+        <div class="event-change-area">
+            <h1 class="form-header">Изменение события</h1>
+                <input class="form-input-name" type="text" placeholder="Название">
+                <p><textarea class="form-description" type="text" placeholder="Описание"></textarea></p>
+                <input class="form-submit" type="submit" value="Сохранить">
+            <button class="form-close">Отмена</button>
+        </div>
     </div>
 
     <div class="head">
         <button class="create-event btn">Создать событие</button>
         <div class="registration-block">
-            <a href="/auth" class="auth btn">Войти</a>
-            <a href="/reg" class="reg btn">Зарегистрироваться</a>
+            <div class="exit btn">Выход</div>
         </div>
     </div>
     
@@ -55,6 +62,7 @@
                 <div class="days">
                     <div v-for="day in days" class="day">
                         <h1 class="day-title">{{day['day']}}</h1>
+                        <button class="create-event-day btn hide">Создать событие</button>
                         <div class="events-list"></div>
                     </div>
                 </div>
