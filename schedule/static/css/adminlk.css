@@ -125,7 +125,7 @@ body {
 	justify-content: space-around;
 }
 
-.event-area {
+.event-area, .event-change-area {
 	width: 35rem;
 	height: 40rem;
 	border-radius: 15px;

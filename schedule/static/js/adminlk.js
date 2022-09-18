@@ -68,11 +68,13 @@ function dayOpenClose(target) {
 function createEventArea() {
    document.body.style.overflow = "hidden";
    document.querySelector('.background-form').classList.remove('hide');
+   document.querySelector('.event-area').classList.remove('hide');
 }
 
 function closeEventArea() {
    document.body.style.overflow = "visible";
    document.querySelector('.background-form').classList.add('hide');
+   document.querySelector('.event-area').classList.add('hide');
 }
 
 function addEvent() {
@@ -90,9 +92,21 @@ function addEvent() {
   });
 }
 
+function createChangeEventArea(event_target) {
+   document.body.style.overflow = "hidden";
+   document.querySelector('.background-form').classList.remove('hide');
+   document.querySelector('.event-change-area').classList.remove('hide');
+   document.querySelector('.form-change-name').value = $(event_target).attr('data-name');
+   document.querySelector('.form-change-description').value = $(event_target).attr('data-description');
+   $('.change-event').click(() => {
+      changeEvent(event_target);
+   });
+}
 
 function changeEvent(event) {
-   console.log("event")
+   event.innerText  = document.querySelector('.form-change-name').value;
+   $(event).attr('data-name', document.querySelector('.form-change-name').value);
+   console.log(a)
 }
 
 
@@ -107,7 +121,7 @@ function renderEvents(response) {
       document.querySelectorAll('.day').forEach((day) => {
          if (day.childNodes[0].innerText.toLowerCase() == event[3].toLowerCase()) {
             console.log(day.childNodes)
-            $(day.childNodes[4]).append(`<div class="event hide">${event[1]}</div>`);
+            $(day.childNodes[4]).append(`<div class="event hide" data-name="${event[1]}" data-description="${event[5]}">${event[1]}</div>`);
          };
       });
    });
@@ -127,7 +141,9 @@ function sendingEvents(data) {
 function getData() {
    $.post("/getdata", 'hello', success = function(response) {
       renderEvents(JSON.parse(response));
+      clickOnEvents();
 	});
+   main();
 }
 
 function signOut() {
@@ -143,22 +159,24 @@ function signOut() {
 ВЫЗОВ ФУНКЦИЙ
 ========================================================================================================
 */
+function clickOnEvents() {
+   $('.event').click(function(event) {
+      event.stopPropagation();
+      createChangeEventArea(event.target);
+   });
+}
+
 function main() {
    document.querySelectorAll('.day').forEach((day) => {
       day.addEventListener('click', () => {
          dayOpenClose(day);
       });
    });
-   console.log(document.getElementsByClassName('event'))
-   $('.event').click(function(event) {
-      console.log(event);
-   });
    $('.create-event').click(createEventArea);
    $('.form-close').click(closeEventArea);
    $('.form-submit').click(closeEventArea);
    $('.form-submit').click(addEvent);
    $('.exit').click(signOut);
-   getData();
 }
 
-document.addEventListener('DOMContentLoaded', main);
+document.addEventListener('DOMContentLoaded', getData);

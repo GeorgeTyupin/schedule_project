@@ -1,4 +1,4 @@
 import os
-DATA_DST = os.path.join(os.getcwd() , 'python_raspisanie/schedule/core/database.db')
-print(os.getcwd())
+DATA_DST = os.path.join(os.getcwd() , 'schedule_project/schedule/core/database.db')
+print(DATA_DST)
 from . import database
