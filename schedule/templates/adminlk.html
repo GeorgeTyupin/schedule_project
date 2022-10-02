@@ -16,19 +16,35 @@
     <div class="background-form hide">
         <div class="event-area hide">
             <h1 class="form-header">Создание событие</h1>
-                <input class="form-input-name" type="text" placeholder="Название">
-                <input class="form-input-day" type="text" placeholder="День недели">
-                <p><textarea class="form-description" type="text" placeholder="Описание"></textarea></p>
-                <input class="form-submit" type="submit" value="Сохранить">
+            <input class="form-input-name" type="text" placeholder="Название">
+            <input class="form-input-day" type="text" placeholder="День недели">
+            <p><textarea class="form-description" type="text" placeholder="Описание"></textarea></p>
+            <input class="form-submit" type="submit" value="Сохранить">
+            <button class="form-close">Отмена</button>
+        </div>
+
+        <div class="event-day-area hide">
+            <h1 class="form-header">Создание событие</h1>
+            <input class="form-input-name" type="text" placeholder="Название">
+            <p><textarea class="form-description" type="text" placeholder="Описание"></textarea></p>
+            <input class="form-submit" type="submit" value="Сохранить">
             <button class="form-close">Отмена</button>
         </div>
 
         <div class="event-change-area hide">
             <h1 class="form-header">Изменение события</h1>
-                <input class="form-change-name" type="text" placeholder="Название">
-                <p><textarea class="form-change-description" type="text" placeholder="Описание"></textarea></p>
-                <input class="form-submit change-event" type="submit" value="Сохранить">
+            <input class="form-change-name" type="text" placeholder="Название">
+            <p><textarea class="form-change-description" type="text" placeholder="Описание"></textarea></p>
+            <input class="form-submit change-event" type="submit" value="Сохранить">
             <button class="form-close">Отмена</button>
+        </div>
+
+        <div class="show-event hide">
+            <h1 class="form-header event-title"></h1>
+            <p class="event-description"></p>
+            <button class="show-change-event-area">Изменить</button>
+            <button class="form-close">Отмена</button>
+            <button class="event-detele">Удалить</button>
         </div>
     </div>
 

@@ -59,11 +59,26 @@ def reg():
         response = make_response(redirect("/"))
         return response
 
-@app.route("/getdata", methods=['GET', 'POST'])
-def getdata():
+@app.route("/get_data", methods=['GET', 'POST'])
+def get_data():
     return json.dumps(db.loadEventsTable(session['id']))
 
 @app.route("/exit", methods=['GET', 'POST'])
 def exit():
     session = {}
     return ''
+
+@app.route("/changing_events", methods=['POST'])
+def changing_events():
+    data = {}
+    data['event_id'] = request.form.get('event_id')
+    data['changed_name'] = request.form.get('changed_name')
+    data['changed_description'] = request.form.get('changed_description')
+    db.updateEvents(data)
+    return '1'
+
+@app.route("/delete_event", methods=['GET', 'POST'])
+def delete_event():
+    event_id = request.form.get('event_id')
+    db.deleteEvents(event_id)
+    return event_id

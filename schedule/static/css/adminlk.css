@@ -125,7 +125,7 @@ body {
 	justify-content: space-around;
 }
 
-.event-area, .event-change-area {
+.event-area, .event-day-area, .event-change-area, .show-event {
 	width: 35rem;
 	height: 40rem;
 	border-radius: 15px;
@@ -133,6 +133,16 @@ body {
 	background-color: #7D3AD4;
     /* background-color: #8243D6; */
 	color: #FFE9EA;
+}
+
+.show-event, .event-day-area {
+    height: 25rem !important;
+}
+
+.event-description {
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+    font-size: 2rem;
 }
 
 .form-header {
@@ -143,7 +153,11 @@ body {
     margin-top: 5rem !important;
 }
 
-.form-input-name, .form-input-day, .form-description {
+.form-change-name {
+    margin-top: 7rem !important; 
+}
+
+.form-input-name, .form-input-day, .form-description, .form-change-name, .form-change-description {
 	width: 26rem;
 	height: 2.5rem;
 	margin-top: 1.4rem;
@@ -151,18 +165,18 @@ body {
 	background-color: #DEE2E2;
 }
 
-.form-description {
+.form-description, .form-change-description {
 	height: 6rem;
 }
 
-.form-submit, .form-close {
+.form-submit, .form-close, .show-change-event-area, .event-detele {
 	height: 2.24rem;
 	border-radius: 8px;
 	margin-top: 1.7rem;
 	font-size: 1.2rem;
 }
 
-.form-submit {
+.form-submit, .show-change-event-area, .event-detele {
 	background-color: #D12587;
     color: #FFE9EA;
 	width: 14rem;
@@ -182,7 +196,7 @@ body {
     outline: none !important;
 }
 
-.form-submit:hover, .form-close:hover {
+.form-submit:hover, .form-close:hover, .show-change-event-area:hover, .event-detele:hover {
     font-size: 1.1rem;
     transform: scale(1.1);
     transition: .3s;

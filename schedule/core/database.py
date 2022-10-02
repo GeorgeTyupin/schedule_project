@@ -48,13 +48,13 @@ class Database():
    def updateEvents(self, data):
       with sqlite3.connect(DATA_DST) as cur:
          sql = f"""UPDATE events 
-            SET name = '{data['new_name']}'
-            WHERE id = '{data['event_id']}' """
+            SET name = '{data['changed_name']}'
+            WHERE event_id = {data['event_id']} """
          cur.execute(sql)
          cur.commit()
    
    def deleteEvents(self, event_id):
       with sqlite3.connect(DATA_DST) as cur:
-         sql = f"""DELETE FROM event WHERE id = {event_id}"""
+         sql = f"""DELETE FROM events WHERE event_id = {event_id}"""
          cur.execute(sql)
          cur.commit()
