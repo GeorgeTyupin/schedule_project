@@ -58,3 +58,23 @@ class Database():
          sql = f"""DELETE FROM events WHERE event_id = {event_id}"""
          cur.execute(sql)
          cur.commit()
+
+   def createCategory(self, category_name, user_id):
+      with sqlite3.connect(DATA_DST) as cur:
+         sql = f"""INSERT INTO categories ('user_id' , 'name') 
+            VALUES ('{user_id}','{category_name}')"""
+         cur.execute(sql)
+         cur.commit()
+
+   def loadCategoryTable(self, user_id):
+      with sqlite3.connect(DATA_DST) as cur:
+         sql = f"SELECT * FROM categories WHERE user_id = '{user_id}' "
+         result = cur.execute(sql).fetchall()
+         return result
+   
+   def createCategoryAndEvent(self, event_id, category_id):
+      with sqlite3.connect(DATA_DST) as cur:
+         sql = f"""INSERT INTO categories_and_events ('event_id' , 'category_id') 
+            VALUES ('{event_id}','{category_id}')"""
+         cur.execute(sql)
+         cur.commit()
