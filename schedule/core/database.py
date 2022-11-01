@@ -28,14 +28,25 @@ class Database():
 
    def loadEventsTable(self, author_id):
       with sqlite3.connect(DATA_DST) as cur:
+         event_id_list = []
+         events = []
          sql = f"SELECT * FROM events WHERE author_id = {author_id}"
          result = cur.execute(sql).fetchall()
-         return result
+         for event in result:
+            event_id_list.append(str(event[0]))
+         event_categories = self.loadCategoryAndEvent(event_id_list)
+         for event in result:
+            event = list(event)
+            if event[0] in event_categories.keys():
+               event.append(event_categories[event[0]])
+            events.append(event)
+         return events
    
    def loadUsersTable(self, login):
       with sqlite3.connect(DATA_DST) as cur:
          sql = f"SELECT * FROM users WHERE user_name = '{login}' "
          result = cur.execute(sql).fetchone()
+         print(result)
          return result
    
    def addUser(self, login, password, email):
@@ -78,3 +89,15 @@ class Database():
             VALUES ('{event_id}','{category_id}')"""
          cur.execute(sql)
          cur.commit()
+   
+   def loadCategoryAndEvent(self, event_id_list):
+      with sqlite3.connect(DATA_DST) as cur:
+         event_categories = {}
+         sql = f"SELECT ce.*,c.name FROM categories_and_events ce LEFT JOIN categories c ON c.id = ce.category_id WHERE ce.event_id in ({','.join(event_id_list)}) "
+         result = cur.execute(sql).fetchall()
+         for i in result:
+            key = i[1]
+            if key not in event_categories:
+               event_categories[key] = []
+            event_categories[key].append(i)
+         return event_categories

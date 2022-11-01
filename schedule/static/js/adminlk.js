@@ -48,21 +48,29 @@ var days = new Vue({
    }
  });
 
-function dayOpenClose(target) {
+function checkDayOpenClose(target) {
    events = $($(target).children()).children();
    if (target.className == 'day') {
-      target.classList.add('open-day');
-      $(target).children()[1].classList.remove('hide');
-      for (let i = 0; i < events.length; i++) {
-         events[i].classList.remove('hide');
-      }
+      dayOpen(target, events);
    } else {
-      $(target).children()[1].classList.add('hide');
-      for (let i = 0; i < events.length; i++) {
-         events[i].classList.add('hide');
-      }
-      target.classList.remove('open-day');   
+      dayClose(target, events);
    }
+}
+
+function dayOpen(target, events) {
+   target.classList.add('open-day');
+   $(target).children()[1].classList.remove('hide');
+   for (let i = 0; i < events.length; i++) {
+      events[i].classList.remove('hide');
+   }
+}
+
+function dayClose(target, events) {
+   $(target).children()[1].classList.add('hide');
+   for (let i = 0; i < events.length; i++) {
+      events[i].classList.add('hide');
+   }
+   target.classList.remove('open-day');  
 }
 
 function createEventArea(event, day) {
@@ -102,14 +110,14 @@ function addEvent(day) {
    document.querySelectorAll('.day').forEach((day_elem) => {
       console.log(day_elem.childNodes[0].innerText.toLowerCase().trim())
       console.log(data['event_day'].toLowerCase())
-     if (day_elem.childNodes[0].innerText.toLowerCase() == data['event_day'].toLowerCase().trim()) {
-        if (!day_elem.classList.contains('open-day')) {
-           dayOpenClose(day_elem);
-        }
-        sendingEvents(data);
-        console.log(day_elem.childNodes[3])
-        $(day_elem.childNodes[4]).append(`<div class="event">${data['event_name']}</div>`);
-     };
+      if (day_elem.childNodes[0].innerText.toLowerCase() == data['event_day'].toLowerCase().trim()) {
+         if (!day_elem.classList.contains('open-day')) {
+            checkDayOpenClose(day_elem);
+         }
+         sendingEvents(data);
+         console.log(day_elem.childNodes[3])
+         $(day_elem.childNodes[4]).append(`<div class="event">${data['event_name']}</div>`);
+      };
   });
 }
 
@@ -173,6 +181,43 @@ function createAddEventArea() {
    getCategories(2);
 }
 
+function checkActivationCategories(event) {
+   if (event.target.className == "menu_class-1 btn") {
+      filteringByCategory(event);
+      event.target.classList.add('menu_class-1-active');
+      other_categories = [];
+      document.querySelectorAll('.menu_class-1').forEach((category) => {
+         if (category != event.target) {
+            category.classList.remove('menu_class-1-active');
+         }
+      });
+      
+   } else {
+      event.target.classList.remove('menu_class-1-active');
+      document.querySelectorAll('.day').forEach((day) => {
+         events = $($(day).children()).children();
+         dayClose(day, events);
+      });
+   }
+}
+
+function filteringByCategory(event) {
+   current_category_name = $(event.target).children()[0].innerHTML;
+   document.querySelectorAll('.day').forEach((day) => {
+      events = $($(day).children()).children();
+      dayClose(day, events)
+   });
+   document.querySelectorAll('.event').forEach((event) => {
+      category_names = $(event).attr('data-categories').split(' '); 
+      category_names.forEach((category) => {
+         if (current_category_name == category) {
+            $($(event).parent()).parent()[0].classList.add('open-day');
+            event.classList.remove('hide');
+         }
+      });
+   });
+}
+
 
 
 /*
@@ -182,9 +227,15 @@ function createAddEventArea() {
 */
 function renderEvents(response) {
    response.forEach((event) => {
+      categories = []
+      if (event[6]) {
+         event[6].forEach((category) => {
+            categories.push(category[3])
+         })
+      }
       document.querySelectorAll('.day').forEach((day) => {
          if (day.childNodes[0].innerText.toLowerCase() == event[3].toLowerCase()) {
-            $(day.childNodes[4]).append(`<div class="event hide" data-id="${event[0]}" data-name="${event[1]}" data-description="${event[5]}">${event[1]}</div>`);
+            $(day.childNodes[4]).append(`<div class="event hide" data-id="${event[0]}" data-name="${event[1]}" data-description="${event[5]}" data-categories="${categories.join(' ')}">${event[1]}</div>`);
          };
       });
    });
@@ -206,6 +257,7 @@ function renderCategories(response, param) {
       }
       counter += 1
    });
+   $('.menu_class-1').click(checkActivationCategories);
 }
 
 
@@ -269,8 +321,9 @@ function sendingAddedCategories() {
       }
    });
    console.log(data)
-   $.post("/get_categories_and_events", data, success = function(response) {});
+   $.post("/create_categories_and_events", data, success = function(response) {});
 }
+
 
 
 
@@ -289,7 +342,7 @@ function clickOnEvents() {
 function main() {
    document.querySelectorAll('.day').forEach((day) => {
       day.addEventListener('click', () => {
-         dayOpenClose(day);
+         checkDayOpenClose(day);
       });
    });
    $('.create-event').click(createEventArea);

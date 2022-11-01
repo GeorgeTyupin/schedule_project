@@ -36,12 +36,17 @@ body {
 }
 
 .menu_class-1 {
-    width: 245px;
+    /* width: 245px; */
+    width: 200px;
     height: 40px;
     background-color: #D52388;
     border-radius: 12px !important;
     margin-top: 20px;
 }
+
+.menu_class-1-active {
+    width: 245px !important;
+} 
 
 .menu_class_text {
     font-family: 'Roboto', sans-serif;
@@ -55,7 +60,7 @@ body {
     height: 45px;
     border-radius: 1000px !important;
     margin-top: 30px;
-    margin-right: 190px;
+    margin-right: 155px;
     font-size: 30px !important;
     text-align: center;
     letter-spacing: 0.044em;
@@ -260,8 +265,8 @@ body {
 }
 
 .event {
-    width: 11rem;
-    height: 2rem;
+    width: 10rem;
+    height: 1.8rem;
     margin-top: 15px;
     margin-left: auto;
     margin-right: auto;

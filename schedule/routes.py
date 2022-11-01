@@ -93,8 +93,8 @@ def create_category():
 def get_categories():
     return json.dumps(db.loadCategoryTable(session['id']))
 
-@app.route("/get_categories_and_events", methods=['GET', 'POST'])
-def get_categories_and_events():
+@app.route("/create_categories_and_events", methods=['GET', 'POST'])
+def create_categories_and_events():
     event_id = request.form.get('event_id')
     category_ids = request.form.getlist('category_ids[]')
     print(request.form.get('event_id'))
@@ -103,3 +103,9 @@ def get_categories_and_events():
         for category_id in category_ids:
             db.createCategoryAndEvent(event_id, category_id)
     return ''
+
+@app.route("/get_categories_and_events", methods=['GET', 'POST'])
+def get_categories_and_events():
+    event_id = request.form.get('event_id')
+    print(event_id)
+    return event_id
