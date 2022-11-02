@@ -85,11 +85,25 @@ class Database():
    
    def createCategoryAndEvent(self, event_id, category_id):
       with sqlite3.connect(DATA_DST) as cur:
-         sql = f"""INSERT INTO categories_and_events ('event_id' , 'category_id') 
-            VALUES ('{event_id}','{category_id}')"""
-         cur.execute(sql)
-         cur.commit()
+         sql1 = f"SELECT * FROM categories_and_events WHERE event_id = '{event_id}' AND category_id='{category_id}'"
+         result = cur.execute(sql1).fetchall()
+         if len(result) == 0:
+            sql2 = f"""INSERT INTO categories_and_events ('event_id' , 'category_id') 
+               VALUES ('{event_id}','{category_id}')"""
+            cur.execute(sql2)
+            cur.commit()
    
+   def resemblanceСheckCategoryAndEvent(self, event_id, category_ids):
+      with sqlite3.connect(DATA_DST) as cur:
+         sql1 = f"SELECT * FROM categories_and_events WHERE event_id = '{event_id}'"
+         result = cur.execute(sql1).fetchall()
+         if len(category_ids) != len(result):
+            for i in range(len(result)):
+                  if not str(result[i][2]) in category_ids:
+                     sql2 = f"""DELETE FROM categories_and_events WHERE id = {result[i][0]}"""
+                     cur.execute(sql2)
+                     cur.commit()
+
    def loadCategoryAndEvent(self, event_id_list):
       with sqlite3.connect(DATA_DST) as cur:
          event_categories = {}

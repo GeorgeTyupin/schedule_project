@@ -135,6 +135,9 @@ function showEvent(event_target) {
       data['event_id'] = $(event_target).attr('data-id');
       deleteEvent(data);
    });
+   $('.add-category').click(() => {
+      createAddEventArea(event_target);
+   });
 }
 
 function createChangeEventArea(event_target) {
@@ -175,10 +178,10 @@ function saveCategory(event) {
    sendingCategory(data);
 }
 
-function createAddEventArea() {
+function createAddEventArea(event_target) {
    document.querySelector('.show-event').classList.add('hide');
    document.querySelector('.add-category-area').classList.remove('hide');
-   getCategories(2);
+   getCategories($(event_target).attr('data-categories'));
 }
 
 function checkActivationCategories(event) {
@@ -247,13 +250,18 @@ function renderCategories(response, param) {
    categories_list = $('.categories-list');
    categories_list.html('');
    response.forEach((category) => {
-      if (param == 1) {
+      if (param == 'xb6q~{') {
          categories.append(`<div class="menu_class-1 btn"><p class="menu_class_text">${category[2]}</p></div>`)
       } else {
          categories_list.append(`<div class="category-wrap" category-id="${category[0]}">
             <input type="checkbox" name="" id="checkbox-category-${counter}" class="checkbox-category-input">
             <label for="checkbox-category-${counter}" class="checkbox-category-label">${category[2]}</label>
          </div>`);
+         param.split(' ').forEach((event_category) => {
+            if (event_category == category[2]) {
+               document.querySelectorAll('.checkbox-category-input')[counter-1].checked = true;
+            }
+         });
       }
       counter += 1
    });
@@ -297,7 +305,7 @@ function getData() {
       renderEvents(JSON.parse(response));
       clickOnEvents();
 	});
-   getCategories(1);
+   getCategories('xb6q~{');
    main();
 }
 
@@ -353,7 +361,6 @@ function main() {
    $('.form-close').click(closeEventArea);
    $('.exit').click(signOut);
    $('.menu_add_class').click(createCategory);
-   $('.add-category').click(createAddEventArea);
    $('.sending-added-categories').click(sendingAddedCategories);
 }
 

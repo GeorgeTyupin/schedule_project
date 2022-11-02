@@ -97,15 +97,13 @@ def get_categories():
 def create_categories_and_events():
     event_id = request.form.get('event_id')
     category_ids = request.form.getlist('category_ids[]')
-    print(request.form.get('event_id'))
-    print(category_ids)
     if category_ids:
         for category_id in category_ids:
             db.createCategoryAndEvent(event_id, category_id)
+        db.resemblanceСheckCategoryAndEvent(event_id, category_ids)
     return ''
 
 @app.route("/get_categories_and_events", methods=['GET', 'POST'])
 def get_categories_and_events():
     event_id = request.form.get('event_id')
-    print(event_id)
     return event_id
