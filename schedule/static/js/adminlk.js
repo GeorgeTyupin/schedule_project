@@ -82,13 +82,13 @@ function createEventArea(event, day) {
       document.querySelector('.event-day-area').classList.remove('hide');
    }
    $('.form-submit').off('click');
-   $('.form-submit').click(closeEventArea);
+   $('.form-submit').click(closeAreas);
    $('.form-submit').click( () => {
       addEvent(day);
    });
 }
 
-function closeEventArea() {
+function closeAreas() {
    document.body.style.overflow = "visible";
    document.querySelector('.background-form').classList.add('hide');
    document.querySelector('.event-area').classList.add('hide');
@@ -160,19 +160,20 @@ function changeEvent(event) {
 }
 
 function createCategory() {
-   $('.categories').append(`<div class="menu_class-1 btn">
-                              <input class="menu-filter-name" type="text" placeholder="Название"></input>
-                              <img class="menu-check-mark" src="../static/img/checkmark.png" alt="" srcset="">
-                              <div class="menu-cross"></div>
-                           </div>`);
+   $('.categories').append(`<div class="menu_class-1 menu_class-1-active btn">
+         <input class="menu-filter-name" type="text" placeholder="Название"></input>
+         <img class="menu-check-mark" src="../static/img/checkmark.png" alt="" srcset="">
+         <div class="menu-cross"></div>
+      </div>`);
    $('.menu-check-mark').click(saveCategory);
+   $('.menu-cross').click(deleteNewCategory);
 }
 
 function saveCategory(event) {
-   console.log(12)
    current_category = $(event.target).parent()[0];
    $(current_category).children()[0].classList.add('hide');
    $(current_category).children()[1].classList.add('hide');
+   current_category.classList.remove('menu_class-1-active');
    data['category_name'] = $(current_category).children()[0].value;
    $(current_category).prepend(`<p class="menu_class_text">${data['category_name']}</p>`);
    sendingCategory(data);
@@ -221,6 +222,10 @@ function filteringByCategory(event) {
    });
 }
 
+function deleteNewCategory(event) {
+   $($(event.target).parent()).remove();
+}
+
 
 
 /*
@@ -251,11 +256,14 @@ function renderCategories(response, param) {
    categories_list.html('');
    response.forEach((category) => {
       if (param == 'xb6q~{') {
-         categories.append(`<div class="menu_class-1 btn"><p class="menu_class_text">${category[2]}</p></div>`)
+         categories.append(`<div class="menu_class-1 btn" data-category-id="${category[0]}">
+            <p class="menu_class_text">${category[2]}</p>
+            <div class="menu-cross"></div>
+         </div>`)
       } else {
          categories_list.append(`<div class="category-wrap" category-id="${category[0]}">
-            <input type="checkbox" name="" id="checkbox-category-${counter}" class="checkbox-category-input">
-            <label for="checkbox-category-${counter}" class="checkbox-category-label">${category[2]}</label>
+         <input type="checkbox" name="" id="checkbox-category-${counter}" class="checkbox-category-input">
+         <label for="checkbox-category-${counter}" class="checkbox-category-label">${category[2]}</label>
          </div>`);
          param.split(' ').forEach((event_category) => {
             if (event_category == category[2]) {
@@ -265,7 +273,9 @@ function renderCategories(response, param) {
       }
       counter += 1
    });
+   $('.menu_class-1').off('click');
    $('.menu_class-1').click(checkActivationCategories);
+   $('.menu-cross').click(deleteCategory);
 }
 
 
@@ -277,6 +287,12 @@ function renderCategories(response, param) {
 */
 function sendingEvents(data) {
    $.post("/", data, success = function(response) {});
+}
+
+function deleteCategory(event) {
+   category = $(event.target).parent();
+   $(category).remove();
+   $.post("/delete_category", {"category_id" : $(category).attr('data-category-id')}, success = function(response) {});
 }
 
 function sendingCategory(data) {
@@ -358,7 +374,7 @@ function main() {
       day = $($(event.target).parent()[0]).children()[0].innerHTML;
       createEventArea(event, day);
    });
-   $('.form-close').click(closeEventArea);
+   $('.form-close').click(closeAreas);
    $('.exit').click(signOut);
    $('.menu_add_class').click(createCategory);
    $('.sending-added-categories').click(sendingAddedCategories);

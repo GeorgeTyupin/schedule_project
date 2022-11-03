@@ -115,3 +115,11 @@ class Database():
                event_categories[key] = []
             event_categories[key].append(i)
          return event_categories
+
+   def deleteCategory(self, category_id):
+      with sqlite3.connect(DATA_DST) as cur:
+         sql1 = f"""DELETE FROM categories WHERE id = {category_id}"""
+         sql2 = f"""DELETE FROM categories_and_events WHERE id = {category_id}"""
+         cur.execute(sql1)
+         cur.execute(sql2)
+         cur.commit()

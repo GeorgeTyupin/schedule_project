@@ -103,7 +103,8 @@ def create_categories_and_events():
         db.resemblanceСheckCategoryAndEvent(event_id, category_ids)
     return ''
 
-@app.route("/get_categories_and_events", methods=['GET', 'POST'])
-def get_categories_and_events():
-    event_id = request.form.get('event_id')
-    return event_id
+@app.route("/delete_category", methods=['GET', 'POST'])
+def delete_category():
+    category_id = request.form.get('category_id')
+    db.deleteCategory(category_id)
+    return category_id
