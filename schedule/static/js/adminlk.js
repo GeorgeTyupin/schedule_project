@@ -116,8 +116,8 @@ function addEvent(day) {
             checkDayOpenClose(day_elem);
          }
          sendingEvents(data);
-         console.log(day_elem.childNodes[3])
          $(day_elem.childNodes[4]).append(`<div class="event">${data['event_name']}</div>`);
+         clickOnEvents();
       };
   });
 }
