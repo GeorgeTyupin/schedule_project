@@ -59,6 +59,7 @@ function checkDayOpenClose(target) {
 
 function dayOpen(target, events) {
    target.classList.add('open-day');
+   console.log($(target).children())
    $(target).children()[1].classList.remove('hide');
    for (let i = 0; i < events.length; i++) {
       events[i].classList.remove('hide');
@@ -217,6 +218,7 @@ function filteringByCategory(event) {
          if (current_category_name == category) {
             $($(event).parent()).parent()[0].classList.add('open-day');
             event.classList.remove('hide');
+            $($($(event).parent()).parent()[0]).children()[1].classList.remove('hide');
          }
       });
    });
@@ -241,6 +243,7 @@ function renderEvents(response) {
             categories.push(category[3])
          })
       }
+      console.log(event)
       document.querySelectorAll('.day').forEach((day) => {
          if (day.childNodes[0].innerText.toLowerCase() == event[3].toLowerCase()) {
             $(day.childNodes[4]).append(`<div class="event hide" data-id="${event[0]}" data-name="${event[1]}" data-description="${event[5]}" data-categories="${categories.join(' ')}">${event[1]}</div>`);

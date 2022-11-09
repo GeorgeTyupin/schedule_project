@@ -109,9 +109,9 @@ body {
     align-items: center;
     text-align: center;
     padding-top: 1rem;
+    cursor: pointer;
     transition-duration: 0.2s;
     transition-property: height;
-    cursor: pointer;
 }
 
 .day:hover {
@@ -121,7 +121,9 @@ body {
 
 .open-day {
     width: 13rem;
-    height: 20rem;
+    min-height: 3rem;
+    height: 100%;
+    padding-bottom: 20px;
 }
 
 .day-title {
@@ -135,6 +137,10 @@ body {
     flex-wrap: wrap;
 }
 
+.create-event {
+    margin-left: 20px;
+}
+
 .create-event, .create-event-day {
     width: 10rem;
     height: 2.3rem;
@@ -142,13 +148,13 @@ body {
     font-family: 'Manrope', sans-serif;
     margin-top: auto;
     margin-bottom: auto;
-    margin-left: 20px;
 }
 
 .create-event-day {
     width: 8rem;
     font-size: 0.8rem;
     height: 2rem;
+    margin-left: 2px;
 }
 
 .create-event-day:hover {
@@ -193,8 +199,13 @@ body {
 	color: #FFE9EA;
 }
 
-.show-event {
-    height: 25rem !important;
+.show-event, .add-category-area {
+    height: 23rem;
+    display: table;
+}
+
+.add-category-area {
+    padding-bottom: 3rem;
 }
 
 .event-day-area {
