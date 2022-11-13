@@ -228,6 +228,19 @@ function deleteNewCategory(event) {
    $($(event.target).parent()).remove();
 }
 
+function createCode() {
+   code = []
+   for (let i = 0; i < 6; i++) {
+      alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()_+=-";
+      randomIndex = Math.floor(Math.random() * alphabet.length);
+      randomLatter = alphabet[randomIndex];
+      code.push(randomLatter)
+   }
+   code = code.join('');
+   document.querySelector('.code').innerHTML = code;
+   sendingCode(code);
+}
+
 
 
 /*
@@ -351,6 +364,9 @@ function sendingAddedCategories() {
    $.post("/create_categories_and_events", data, success = function(response) {});
 }
 
+function sendingCode(code) {
+   $.post("/save_code", {'code' : code}, success = function(response) {});
+}
 
 
 
@@ -381,6 +397,7 @@ function main() {
    $('.exit').click(signOut);
    $('.menu_add_class').click(createCategory);
    $('.sending-added-categories').click(sendingAddedCategories);
+   $('.create-code').click(createCode);
 }
 
 document.addEventListener('DOMContentLoaded', getData);

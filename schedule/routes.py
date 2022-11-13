@@ -108,3 +108,10 @@ def delete_category():
     category_id = request.form.get('category_id')
     db.deleteCategory(category_id)
     return category_id
+
+@app.route("/save_code", methods=['GET', 'POST'])
+def save_code():
+    code = request.form.get('code')
+    print(code)
+    db.saveCode(code, session['id'])
+    return  ''

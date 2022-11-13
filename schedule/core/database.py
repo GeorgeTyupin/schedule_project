@@ -123,3 +123,10 @@ class Database():
          cur.execute(sql1)
          cur.execute(sql2)
          cur.commit()
+   
+   def saveCode(self, code, user_id):
+      with sqlite3.connect(DATA_DST) as cur:
+         sql = f"""INSERT INTO user_links ('user_id' , 'code') 
+            VALUES ('{user_id}','{code}')"""
+         cur.execute(sql)
+         cur.commit()
