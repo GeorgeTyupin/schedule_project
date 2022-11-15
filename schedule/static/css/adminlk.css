@@ -182,7 +182,7 @@ body {
 	justify-content: space-around;
 }
 
-.event-area, .event-day-area, .event-change-area, .show-event, .add-category-area {
+.event-area, .event-day-area, .event-change-area, .show-event, .add-category-area, .connection-area {
 	width: 35rem;
 	height: 40rem;
 	border-radius: 15px;
@@ -190,11 +190,19 @@ body {
 	background-color: #7D3AD4;
     /* background-color: #8243D6; */
 	color: #FFE9EA;
+    display: table;
 }
 
 .show-event, .add-category-area {
     height: 23rem;
-    display: table;
+}
+
+.connection-area {
+    height: 20rem;
+} 
+
+.connection-area h1 {
+    margin-top: 3rem;
 }
 
 .add-category-area {
@@ -235,14 +243,14 @@ body {
 	height: 6rem;
 }
 
-.form-submit, .form-close, .show-change-event-area, .event-detele, .add-category, .sending-added-categories {
+.form-submit, .form-close, .show-change-event-area, .event-detele, .add-category, .sending-added-categories, .create-connection {
 	height: 2.24rem;
 	border-radius: 8px;
 	margin-top: 1.7rem;
 	font-size: 1.2rem;
 }
 
-.form-submit, .show-change-event-area, .event-detele, .add-category, .sending-added-categories {
+.form-submit, .show-change-event-area, .event-detele, .add-category, .sending-added-categories, .create-connection {
 	background-color: #D12587;
     color: #FFE9EA;
 	width: 14rem;
@@ -250,6 +258,10 @@ body {
     cursor: pointer;
     border: none;
     outline: none !important;
+}
+
+.create-connection {
+    width: auto;
 }
 
 .form-close {
@@ -348,8 +360,12 @@ body {
 
 .create-code-block {
     display: flex;
-    margin-top: auto;
+    margin-top: 10px;
     margin-bottom: auto;
+}
+
+.create-code {
+    height: 2.3rem;
 }
 
 .code {
@@ -358,4 +374,29 @@ body {
     font-family: 'Roboto', sans-serif;
     font-size: 30px;
     margin-top: 5px;
+}
+
+.form-input-code {
+    background-color: #DEE2E2;
+    outline: none;
+    border: none;
+    border-radius: 8px;
+    height: 2.2rem;
+    width: 17rem;
+    padding-left: 10px;
+}
+
+.form-connection-area {
+    margin-top: 3rem;
+}
+
+.send-code {
+    margin-bottom: 4px;
+    height: 2.4rem;
+    margin-left: 1rem;
+}
+
+.close-form-connection-area {
+    width: 8rem;
+    margin-top: 1rem;
 }
