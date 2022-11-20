@@ -274,7 +274,7 @@ body {
     outline: none !important;
 }
 
-.form-submit:hover, .form-close:hover, .show-change-event-area:hover, .event-detele:hover, .add-category:hover, .sending-added-categories:hover {
+.form-submit:hover, .form-close:hover, .show-change-event-area:hover, .event-detele:hover, .add-category:hover, .sending-added-categories:hover, .create-connection:hover {
     font-size: 1.1rem;
     transform: scale(1.1);
     transition: .3s;

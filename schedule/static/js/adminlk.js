@@ -97,6 +97,7 @@ function closeAreas() {
    document.querySelector('.event-change-area').classList.add('hide');
    document.querySelector('.show-event').classList.add('hide');
    document.querySelector('.add-category-area').classList.add('hide');
+   document.querySelector('.connection-area').classList.add('hide');
 }
 
 function addEvent(day) {
@@ -138,6 +139,9 @@ function showEvent(event_target) {
    });
    $('.add-category').click(() => {
       createAddEventArea(event_target);
+   });
+   $('.create-connection').click(() => {
+      createConnectionArea(event_target);
    });
 }
 
@@ -241,6 +245,15 @@ function createCode() {
    sendingCode(code);
 }
 
+function createConnectionArea(event_target) {
+   document.querySelector('.show-event').classList.add('hide');
+   document.querySelector('.connection-area').classList.remove('hide');
+   $('.close-form-connection-area').click(closeAreas);
+   $('.send-code').click(() => {
+      sendingCodeToEvent($(event_target).attr('data-id'), document.querySelector('.form-input-code').value)
+   });
+}
+
 
 
 /*
@@ -251,11 +264,12 @@ function createCode() {
 function renderEvents(response) {
    response.forEach((event) => {
       categories = []
-      if (event[6]) {
-         event[6].forEach((category) => {
+      if (event[7]) {
+         event[7].forEach((category) => {
             categories.push(category[3])
          })
       }
+      console.log(event[3])
       console.log(event)
       document.querySelectorAll('.day').forEach((day) => {
          if (day.childNodes[0].innerText.toLowerCase() == event[3].toLowerCase()) {
@@ -366,6 +380,11 @@ function sendingAddedCategories() {
 
 function sendingCode(code) {
    $.post("/save_code", {'code' : code}, success = function(response) {});
+}
+
+function sendingCodeToEvent(event_id, code) {
+   $.post("/save_code_to_event", {'code' : code, "event_id" : event_id}, success = function(response) {});
+   closeAreas;
 }
 
 

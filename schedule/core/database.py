@@ -40,6 +40,10 @@ class Database():
             if event[0] in event_categories.keys():
                event.append(event_categories[event[0]])
             events.append(event)
+         print(events)
+         for event in self.loadEventsByCode(author_id):
+            events.append(event)
+         print(events)
          return events
    
    def loadUsersTable(self, login):
@@ -64,11 +68,16 @@ class Database():
          cur.execute(sql)
          cur.commit()
    
-   def deleteEvents(self, event_id):
+   def deleteEvents(self, event_id, author_id):
       with sqlite3.connect(DATA_DST) as cur:
-         sql = f"""DELETE FROM events WHERE event_id = {event_id}"""
-         cur.execute(sql)
-         cur.commit()
+         sql1 = f'SELECT * FROM events WHERE event_id = {event_id}'
+         result = cur.execute(sql1).fetchone()
+         if result[2] == author_id:
+            sql2 = f"""DELETE FROM events WHERE event_id = {event_id}"""
+            cur.execute(sql2)
+            cur.commit()
+         else:
+            self.deleteCodeFromEvent(event_id)
 
    def createCategory(self, category_name, user_id):
       with sqlite3.connect(DATA_DST) as cur:
@@ -126,7 +135,36 @@ class Database():
    
    def saveCode(self, code, user_id):
       with sqlite3.connect(DATA_DST) as cur:
-         sql = f"""INSERT INTO user_links ('user_id' , 'code') 
+         sql = f"""INSERT INTO user_codes ('user_id' , 'code') 
             VALUES ('{user_id}','{code}')"""
+         cur.execute(sql)
+         cur.commit()
+   
+   def saveCodeToEvent(self, code, event_id):
+      with sqlite3.connect(DATA_DST) as cur:
+         sql = f""" UPDATE events
+            SET code = '{code}'
+            WHERE event_id = {event_id}"""
+         cur.execute(sql)
+         cur.commit()
+
+   def loadEventsByCode(self, author_id):
+      with sqlite3.connect(DATA_DST) as cur:
+         events = []
+         sql1 = "SELECT * FROM user_codes"
+         result1 = cur.execute(sql1).fetchall()
+         sql2 = f"SELECT * FROM events WHERE NOT author_id = {author_id}"
+         result2 = cur.execute(sql2).fetchall()
+         for event in result2:
+            for code in result1:
+               if event[6] == code[2]:
+                  events.append(event)
+         return events
+   
+   def deleteCodeFromEvent(self, event_id):
+      with sqlite3.connect(DATA_DST) as cur:
+         sql = f""" UPDATE events
+            SET code = 'NULL'
+            WHERE event_id = {event_id}"""
          cur.execute(sql)
          cur.commit()

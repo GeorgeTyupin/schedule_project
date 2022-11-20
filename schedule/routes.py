@@ -80,7 +80,7 @@ def changing_events():
 @app.route("/delete_event", methods=['GET', 'POST'])
 def delete_event():
     event_id = request.form.get('event_id')
-    db.deleteEvents(event_id)
+    db.deleteEvents(event_id, session['id'])
     return event_id
 
 @app.route("/create_category", methods=['GET', 'POST'])
@@ -114,4 +114,11 @@ def save_code():
     code = request.form.get('code')
     print(code)
     db.saveCode(code, session['id'])
+    return  ''
+
+@app.route("/save_code_to_event", methods=['GET', 'POST'])
+def save_code_to_event():
+    code = request.form.get('code')
+    event_id = request.form.get('event_id')
+    db.saveCodeToEvent(code, event_id)
     return  ''
