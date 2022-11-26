@@ -59,7 +59,6 @@ function checkDayOpenClose(target) {
 
 function dayOpen(target, events) {
    target.classList.add('open-day');
-   console.log($(target).children())
    $(target).children()[1].classList.remove('hide');
    for (let i = 0; i < events.length; i++) {
       events[i].classList.remove('hide');
@@ -98,6 +97,7 @@ function closeAreas() {
    document.querySelector('.show-event').classList.add('hide');
    document.querySelector('.add-category-area').classList.add('hide');
    document.querySelector('.connection-area').classList.add('hide');
+   document.querySelector('.alert-block').classList.add('hide');
 }
 
 function addEvent(day) {
@@ -110,14 +110,12 @@ function addEvent(day) {
    }
    data['event-description'] = document.querySelector('.form-description').value;
    document.querySelectorAll('.day').forEach((day_elem) => {
-      console.log(day_elem.childNodes[0].innerText.toLowerCase().trim())
-      console.log(data['event_day'].toLowerCase())
       if (day_elem.childNodes[0].innerText.toLowerCase() == data['event_day'].toLowerCase().trim()) {
          if (!day_elem.classList.contains('open-day')) {
             checkDayOpenClose(day_elem);
          }
          sendingEvents(data);
-         $(day_elem.childNodes[4]).append(`<div class="event">${data['event_name']}</div>`);
+         $(day_elem.childNodes[4]).append(`<div class="event" data-name="${data['event_name']}" data-description="${data['event-description']}">${data['event_name']}</div>`);
          clickOnEvents();
       };
   });
@@ -269,8 +267,6 @@ function renderEvents(response) {
             categories.push(category[3])
          })
       }
-      console.log(event[3])
-      console.log(event)
       document.querySelectorAll('.day').forEach((day) => {
          if (day.childNodes[0].innerText.toLowerCase() == event[3].toLowerCase()) {
             $(day.childNodes[4]).append(`<div class="event hide" data-id="${event[0]}" data-name="${event[1]}" data-description="${event[5]}" data-categories="${categories.join(' ')}">${event[1]}</div>`);
@@ -383,8 +379,13 @@ function sendingCode(code) {
 }
 
 function sendingCodeToEvent(event_id, code) {
-   $.post("/save_code_to_event", {'code' : code, "event_id" : event_id}, success = function(response) {});
-   closeAreas;
+   $.post("/save_code_to_event", {'code' : code, "event_id" : event_id}, success = function(response) {
+      if (response == 'Данного кода не существует') {
+         document.querySelector('.alert-block').classList.remove('hide');
+      } else {
+         closeAreas;
+      }
+   });
 }
 
 

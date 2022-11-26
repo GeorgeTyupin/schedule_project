@@ -37,7 +37,7 @@ def auth():
             response = make_response(redirect(f"/"))
             return response
         else:
-            return render_template('auth.html')
+            return 'Неправильный логин или пароль'
 
 @app.route('/reg', methods=['GET', 'POST'])
 def reg():
@@ -120,5 +120,8 @@ def save_code():
 def save_code_to_event():
     code = request.form.get('code')
     event_id = request.form.get('event_id')
+    result = db.loadCodesTable(code)
+    if not result:
+        return 'Данного кода не существует'
     db.saveCodeToEvent(code, event_id)
     return  ''

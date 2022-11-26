@@ -3,7 +3,7 @@ body {
    z-index: 1;
 }
 
-h1 {
+h1, h3 {
    color: #FAF7F7;
 }
 

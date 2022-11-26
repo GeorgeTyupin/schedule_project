@@ -3,8 +3,12 @@ body {
    z-index: 1;
 }
 
-h1 {
+h1, h3 {
    color: #FAF7F7;
+}
+
+h3 {
+   font-style: italic;
 }
 
 input {
@@ -33,7 +37,7 @@ a:hover {
    width: 50rem;
    height: 35rem;
    border-radius: 17px;
-   background-color: #7D3AD4;;
+   background-color: #7D3AD4;
 }
 
 .login-block, .password-block, .email-block {

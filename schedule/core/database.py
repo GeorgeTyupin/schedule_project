@@ -50,7 +50,6 @@ class Database():
       with sqlite3.connect(DATA_DST) as cur:
          sql = f"SELECT * FROM users WHERE user_name = '{login}' "
          result = cur.execute(sql).fetchone()
-         print(result)
          return result
    
    def addUser(self, login, password, email):
@@ -168,3 +167,10 @@ class Database():
             WHERE event_id = {event_id}"""
          cur.execute(sql)
          cur.commit()
+ 
+   def loadCodesTable(self, code):
+      with sqlite3.connect(DATA_DST) as cur:
+         print(code)
+         sql = f"SELECT * FROM user_codes WHERE code = '{code}'"
+         result = cur.execute(sql).fetchall()
+         return result
