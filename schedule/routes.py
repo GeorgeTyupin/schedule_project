@@ -56,7 +56,7 @@ def reg():
         session['login'] = login
         session['email'] = result[3]
         session['auth'] = True
-        response = make_response(redirect("/"))
+        response = make_response(redirect(f"/"))
         return response
 
 @app.route("/get_data", methods=['GET', 'POST'])
@@ -80,6 +80,8 @@ def changing_events():
 @app.route("/delete_event", methods=['GET', 'POST'])
 def delete_event():
     event_id = request.form.get('event_id')
+    print(event_id)
+    print(type(event_id))
     db.deleteEvents(event_id, session['id'])
     return event_id
 

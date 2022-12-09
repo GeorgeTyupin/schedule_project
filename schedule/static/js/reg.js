@@ -8,6 +8,8 @@ function reg() {
             document.querySelector('.alert').innerHTML = "Такой пользователь уже существует";
             document.querySelector('.alert-block').classList.remove('hide');
             document.querySelector('.login-block').style.paddingTop = '6%';
+         } else {
+            document.location.href="/";
          }
       });
    } else {

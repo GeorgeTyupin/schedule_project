@@ -189,7 +189,10 @@ function createAddEventArea(event_target) {
 }
 
 function checkActivationCategories(event) {
-   if (event.target.className == "menu_class-1 btn") {
+   if (event.target.className == "menu_class_text") {
+      event.target = $(event.target).parent()[0];
+   }
+   if (event.target.className == "menu_class-1 btn" ) {
       filteringByCategory(event);
       event.target.classList.add('menu_class-1-active');
       other_categories = [];
@@ -198,7 +201,6 @@ function checkActivationCategories(event) {
             category.classList.remove('menu_class-1-active');
          }
       });
-      
    } else {
       event.target.classList.remove('menu_class-1-active');
       document.querySelectorAll('.day').forEach((day) => {
@@ -328,12 +330,10 @@ function sendingCategory(data) {
 
 function deleteEvent(data) {
    $.post("/delete_event", data, success = function(response) {
-      console.log(response)
-      const id = `${response['event_id']}`
       document.querySelector('.background-form').classList.add('hide');
       document.querySelector('.show-event').classList.add('hide');
-      ev = document.querySelector(`div[data-id=${id}]`)
-      $(ev).remove()
+      ev = document.querySelector(`div[data-id="${response}"]`);
+      $(ev).remove();
    });
 }
 
