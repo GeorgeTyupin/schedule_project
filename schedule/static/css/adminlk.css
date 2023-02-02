@@ -29,10 +29,14 @@ body {
     text-align: center;
 }
 
-.menu-title {
+.menu-title, .menu-title-no-categories, .menu-event-no-categories {
     font-family: 'Roboto', sans-serif;
     font-size: 25px;
     color: #FFE9EA;
+}
+
+.menu-title-no-categories, .menu-event-no-categories {
+    margin-top: 2rem;
 }
 
 .menu_class-1 {

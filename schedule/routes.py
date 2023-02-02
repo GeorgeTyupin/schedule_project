@@ -17,7 +17,7 @@ def index():
         data['event_name'] = request.form.get('event_name')
         data['event_day'] = request.form.get('event_day')
         data['event-description'] = request.form.get('event-description')
-        print(data)
+        # print(data)
         db.addEvent(data, session['id'])
         return ''
 
@@ -80,14 +80,15 @@ def changing_events():
 @app.route("/delete_event", methods=['GET', 'POST'])
 def delete_event():
     event_id = request.form.get('event_id')
-    print(event_id)
-    print(type(event_id))
+    # print(event_id)
+    # print(type(event_id))
     db.deleteEvents(event_id, session['id'])
     return event_id
 
 @app.route("/create_category", methods=['GET', 'POST'])
 def create_category():
     category_name = request.form.get('category_name')
+    print(category_name)
     db.createCategory(category_name, session['id'])
     return ''
 
@@ -114,7 +115,7 @@ def delete_category():
 @app.route("/save_code", methods=['GET', 'POST'])
 def save_code():
     code = request.form.get('code')
-    print(code)
+    # print(code)
     db.saveCode(code, session['id'])
     return  ''
 

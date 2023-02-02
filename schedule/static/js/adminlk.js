@@ -282,25 +282,37 @@ function renderCategories(response, param) {
    categories = $('.categories');
    categories_list = $('.categories-list');
    categories_list.html('');
-   response.forEach((category) => {
-      if (param == 'xb6q~{') {
-         categories.append(`<div class="menu_class-1 btn" data-category-id="${category[0]}">
-            <p class="menu_class_text">${category[2]}</p>
-            <div class="menu-cross"></div>
-         </div>`)
-      } else {
-         categories_list.append(`<div class="category-wrap" category-id="${category[0]}">
-         <input type="checkbox" name="" id="checkbox-category-${counter}" class="checkbox-category-input">
-         <label for="checkbox-category-${counter}" class="checkbox-category-label">${category[2]}</label>
-         </div>`);
-         param.split(' ').forEach((event_category) => {
-            if (event_category == category[2]) {
-               document.querySelectorAll('.checkbox-category-input')[counter-1].checked = true;
+   if (response.length != 0) {
+      response.forEach((category) => {
+         if (param == 'xb6q~{') {
+            categories.append(`<div class="menu_class-1 btn" data-category-id="${category[0]}">
+               <p class="menu_class_text">${category[2]}</p>
+               <div class="menu-cross"></div>
+            </div>`)
+         } else {
+            categories_list.append(`<div class="category-wrap" category-id="${category[0]}">
+            <input type="checkbox" name="" id="checkbox-category-${counter}" class="checkbox-category-input">
+            <label for="checkbox-category-${counter}" class="checkbox-category-label">${category[2]}</label>
+            </div>`);
+            if (param) {
+               param.split(' ').forEach((event_category) => {
+                  console.log(event_category)
+                  if (event_category == category[2]) {
+                     document.querySelectorAll('.checkbox-category-input')[counter-1].checked = true;
+                  }
+               });
             }
-         });
+         }
+         counter += 1
+      });
+   } else {
+      if (!document.querySelector('.menu-title-no-categories')) {
+         categories.append(`<h1 class="menu-title-no-categories">Категорий пока нет</h1>`);
       }
-      counter += 1
-   });
+      if (!document.querySelector('.menu-event-no-categories')) {
+         categories_list.append(`<h1 class="menu-event-no-categories">Категорий пока нет</h1>`);
+      }
+   }
    $('.menu_class-1').off('click');
    $('.menu_class-1').click(checkActivationCategories);
    $('.menu-cross').click(deleteCategory);
