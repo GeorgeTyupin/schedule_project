@@ -4,7 +4,6 @@ data = {};
 РАБОТА НА СТРАНИЧКЕ
 ======================================================================================================== 
 */
-
 var days = new Vue({
    el: '#prev',
    data: {
@@ -12,41 +11,71 @@ var days = new Vue({
       {
          day : 'Понедельник',
          tasks : [],
+         mark : "Mon",
          id: 1
       },
       {
          day : 'Вторник',
          tasks : [],
+         mark : "Tue",
          id: 2
       },
       {
          day : 'Среда',
          tasks : [],
+         mark : "Wed",
          id: 3
       },
       {
          day : 'Четверг',
          tasks : [],
+         mark : "Thu",
          id: 4
       },
       {
          day : 'Пятница',
          tasks : [],
+         mark : "Fri",
          id: 5
       },
       {
          day : 'Суббота',
          tasks : [],
+         mark : "Sat",
          id: 6
       },
       {
          day : 'Воскресенье',
          tasks : [],
+         mark : "Sun",
          id: 7
       }
      ]
    }
  });
+
+class schedule {
+   constructor() {
+      this.date = new Date();
+      this.date_string = this.date.toString();
+      console.log("Create new schedule");
+      this.current_day = this.date.getDate();
+      this.current_day_elem = '';
+   }
+
+   setCurrentDay() {
+      days.days.forEach((day) => {
+         if (day['mark'] == this.date_string.slice(0, 3)) {
+            this.current_day_elem = day;
+         }
+      });
+      // console.log(this.date_string.slice(0, 3));
+   }
+}
+
+var current_schedule = new schedule();
+current_schedule.setCurrentDay();
+console.log(current_schedule.current_day_elem)
 
 function checkDayOpenClose(target) {
    events = $($(target).children()).children();
