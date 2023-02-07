@@ -10,45 +10,45 @@ var days = new Vue({
       days : [
       {
          day : 'Понедельник',
-         tasks : [],
          mark : "Mon",
-         id: 1
+         date: '',
+         id: 0
       },
       {
          day : 'Вторник',
-         tasks : [],
          mark : "Tue",
-         id: 2
+         date: '',
+         id: 1
       },
       {
          day : 'Среда',
-         tasks : [],
          mark : "Wed",
-         id: 3
+         date: '',
+         id: 2
       },
       {
          day : 'Четверг',
-         tasks : [],
          mark : "Thu",
-         id: 4
+         date: '',
+         id: 3
       },
       {
          day : 'Пятница',
-         tasks : [],
          mark : "Fri",
-         id: 5
+         date: '',
+         id: 4
       },
       {
          day : 'Суббота',
-         tasks : [],
          mark : "Sat",
-         id: 6
+         date: '',
+         id: 5
       },
       {
          day : 'Воскресенье',
-         tasks : [],
          mark : "Sun",
-         id: 7
+         date: '',
+         id: 6
       }
      ]
    }
@@ -57,28 +57,62 @@ var days = new Vue({
 class schedule {
    constructor() {
       this.date = new Date();
+      console.log('Create new schedule');
       this.date_string = this.date.toString();
-      console.log("Create new schedule");
       this.current_day = this.date.getDate();
       this.current_day_elem = '';
+      this.current_day_id = 0;
+      this.mounth_list = {
+         'Jan' : 'Января',
+         'Feb' : 'Февраля',
+         'Mar' : 'Марта',
+         'Apr' : 'Апреля',
+         'May' : 'Мая',
+         'Jun' : 'Июня',
+         'Jul' : 'Июля',
+         'Aug' : 'Августа',
+         'Sep' : 'Сентября',
+         'Oct' : 'Октября',
+         'Nov' : 'Ноября',
+         'Dec' : 'Декабря'
+      };
+      this.setCurrentDay();
+      this.setDataInDayElem();
+      this.replaceDays();
    }
 
    setCurrentDay() {
       days.days.forEach((day) => {
          if (day['mark'] == this.date_string.slice(0, 3)) {
-            this.current_day_elem = day;
+            this.current_day_id = day['id'];
+            document.querySelectorAll('.day').forEach((day_elem) => {
+               if (day['day'] == $(day_elem).children()[0].innerHTML) {
+                  this.current_day_elem = day_elem;
+               }
+            });
          }
       });
-      // console.log(this.date_string.slice(0, 3));
+   }
+
+   setDataInDayElem() {
+      let mounth = this.mounth_list[`${this.date_string.slice(4, 7)}`];
+      let day = this.date_string.slice(7, 10);
+      if (day.slice(1, 2) == '0') {
+         day = day.slice(2, 3)
+      }
+      console.log(day + ' ' + mounth)
+   }
+
+   replaceDays() {
+      days.days.slice(0, this.current_day_id).forEach((day) => {
+         days.days.shift();
+         days.days.push(day);
+      });
    }
 }
 
-var current_schedule = new schedule();
-current_schedule.setCurrentDay();
-console.log(current_schedule.current_day_elem)
-
 function checkDayOpenClose(target) {
-   events = $($(target).children()).children();
+   events = $($(target).children()[2]).children();
    if (target.className == 'day') {
       dayOpen(target, events);
    } else {
@@ -89,6 +123,7 @@ function checkDayOpenClose(target) {
 function dayOpen(target, events) {
    target.classList.add('open-day');
    $(target).children()[1].classList.remove('hide');
+   $(target).children()[2].classList.remove('hide');
    for (let i = 0; i < events.length; i++) {
       events[i].classList.remove('hide');
    }
@@ -96,6 +131,7 @@ function dayOpen(target, events) {
 
 function dayClose(target, events) {
    $(target).children()[1].classList.add('hide');
+   $(target).children()[2].classList.add('hide');
    for (let i = 0; i < events.length; i++) {
       events[i].classList.add('hide');
    }
@@ -299,7 +335,7 @@ function renderEvents(response) {
          })
       }
       document.querySelectorAll('.day').forEach((day) => {
-         if (day.childNodes[0].innerText.toLowerCase() == event[3].toLowerCase()) {
+         if ($($(day).children()[0]).children()[1].innerText.toLowerCase() == event[3].toLowerCase()) {
             $(day.childNodes[4]).append(`<div class="event hide" data-id="${event[0]}" data-name="${event[1]}" data-description="${event[5]}" data-categories="${categories.join(' ')}">${event[1]}</div>`);
          };
       });
@@ -459,6 +495,7 @@ function main() {
    $('.menu_add_class').click(createCategory);
    $('.sending-added-categories').click(sendingAddedCategories);
    $('.create-code').click(createCode);
+   var current_schedule = new schedule();
 }
 
 document.addEventListener('DOMContentLoaded', getData);

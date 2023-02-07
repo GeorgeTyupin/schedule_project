@@ -98,7 +98,10 @@
             <div id="prev" class="col">
                 <div class="days">
                     <div v-for="day in days" class="day">
-                        <h1 class="day-title">{{day['day']}}</h1>
+                        <div class="days-titles-wrap">
+                            <h1 class="day-id">17 февраля   </h1>
+                            <h1 class="day-title">{{day['day']}}</h1>
+                        </div>
                         <button class="create-event-day btn hide">Создать событие</button>
                         <div class="events-list"></div>
                     </div>

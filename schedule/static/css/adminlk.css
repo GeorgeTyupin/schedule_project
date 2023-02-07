@@ -106,13 +106,13 @@ body {
 
 .day {
     background-color: #fff;
-    width: 11rem;
-    height: 4rem;
+    width: 12rem;
+    height: 5rem;
     border-radius: 17px;
     flex-direction: column;
     align-items: center;
     text-align: center;
-    padding-top: 1rem;
+    padding-top: 0.5rem;
     cursor: pointer;
     transition-duration: 0.2s;
     transition-property: height;
@@ -129,9 +129,13 @@ body {
     padding-bottom: 20px;
 }
 
-.day-title {
-    font-size: 1.4rem;
+.day-title, .day-id {
+    font-size: 1.3rem;
     font-family: 'Manrope', sans-serif;
+}
+
+.day-id {
+    margin-left: 8px;
 }
 
 .days {
