@@ -506,7 +506,7 @@ function main() {
    $('.menu_add_class').click(createCategory);
    $('.sending-added-categories').click(sendingAddedCategories);
    $('.create-code').click(createCode);
-   var current_schedule = new schedule();
+   window.current_schedule = new schedule();
 }
 
 document.addEventListener('DOMContentLoaded', getData);
