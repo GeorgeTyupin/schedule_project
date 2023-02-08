@@ -79,7 +79,6 @@ class schedule {
       this.setCurrentDay();
       this.setDataInDayElem();
       this.replaceDays();
-      console.log(this.mounth_list)
    }
 
    setCurrentDay() {
