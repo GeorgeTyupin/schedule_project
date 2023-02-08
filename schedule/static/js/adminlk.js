@@ -63,22 +63,23 @@ class schedule {
       this.current_day_elem = '';
       this.current_day_id = 0;
       this.mounth_list = {
-         'Jan' : 'Января',
-         'Feb' : 'Февраля',
-         'Mar' : 'Марта',
-         'Apr' : 'Апреля',
-         'May' : 'Мая',
-         'Jun' : 'Июня',
-         'Jul' : 'Июля',
-         'Aug' : 'Августа',
-         'Sep' : 'Сентября',
-         'Oct' : 'Октября',
-         'Nov' : 'Ноября',
-         'Dec' : 'Декабря'
+         'Jan' : ['Января', 32 - new Date(this.date.getFullYear(), 0, 32).getDate()],
+         'Feb' : ['Февраля', 32 - new Date(this.date.getFullYear(), 1, 32).getDate()],
+         'Mar' : ['Марта', 32 - new Date(this.date.getFullYear(), 2, 32).getDate()],
+         'Apr' : ['Апреля', 32 - new Date(this.date.getFullYear(), 3, 32).getDate()],
+         'May' : ['Мая', 32 - new Date(this.date.getFullYear(), 4, 32).getDate()],
+         'Jun' : ['Июня', 32 - new Date(this.date.getFullYear(), 5, 32).getDate()],
+         'Jul' : ['Июля', 32 - new Date(this.date.getFullYear(), 6, 32).getDate()],
+         'Aug' : ['Августа', 32 - new Date(this.date.getFullYear(), 7, 32).getDate()],
+         'Sep' : ['Сентября', 32 - new Date(this.date.getFullYear(), 8, 32).getDate()],
+         'Oct' : ['Октября', 32 - new Date(this.date.getFullYear(), 9, 32).getDate()],
+         'Nov' : ['Ноября', 32 - new Date(this.date.getFullYear(), 10, 32).getDate()],
+         'Dec' : ['Декабря', 32 - new Date(this.date.getFullYear(), 11, 32).getDate()]
       };
       this.setCurrentDay();
       this.setDataInDayElem();
       this.replaceDays();
+      console.log(this.mounth_list)
    }
 
    setCurrentDay() {
@@ -95,11 +96,21 @@ class schedule {
    }
 
    setDataInDayElem() {
-      let mounth = this.mounth_list[`${this.date_string.slice(4, 7)}`];
+      let mounth = this.mounth_list[`${this.date_string.slice(4, 7)}`][0];
       let day = this.date_string.slice(7, 10);
       if (day.slice(1, 2) == '0') {
          day = day.slice(2, 3)
       }
+      let date_counter = day;
+      document.querySelectorAll('.day-date').forEach((day_date) => {
+         day_date.innerHTML = date_counter + ' ' + mounth;
+         if (date_counter < this.mounth_list[`${this.date_string.slice(4, 7)}`][1]) {
+            date_counter++;
+         } else {
+            date_counter = 1;
+            mounth = this.mounth_list[`${Object.keys(this.mounth_list)[Object.keys(this.mounth_list).indexOf(`${this.date_string.slice(4, 7)}`) + 1]}`][0]
+         }
+      });
       console.log(day + ' ' + mounth)
    }
 

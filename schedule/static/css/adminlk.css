@@ -129,7 +129,7 @@ body {
     padding-bottom: 20px;
 }
 
-.day-title, .day-id {
+.day-title, .day-date {
     font-size: 1.3rem;
     font-family: 'Manrope', sans-serif;
 }
