@@ -60,7 +60,6 @@ class schedule {
       console.log('Create new schedule');
       this.date_string = this.date.toString();
       this.current_day = this.date.getDate();
-      this.current_day_elem = '';
       this.current_day_id = 0;
       this.mounth_list = {
          'Jan' : ['Января', 32 - new Date(this.date.getFullYear(), 0, 32).getDate()],
@@ -79,18 +78,19 @@ class schedule {
       this.setCurrentDay();
       this.setDataInDayElem();
       this.replaceDays();
+      console.log(this.current_day_name)
    }
 
    setCurrentDay() {
       days.days.forEach((day) => {
          if (day['mark'] == this.date_string.slice(0, 3)) {
             this.current_day_id = day['id'];
-            document.querySelectorAll('.day').forEach((day_elem) => {
-               if (day['day'] == $(day_elem).children()[0].innerHTML) {
-                  this.current_day_elem = day_elem;
-               }
-            });
+            this.current_day_name = day['day'];
          }
+      });
+      document.querySelectorAll('.day').forEach((day_elem) => {
+         console.log($($(day_elem).children()[0]).children()[1])
+
       });
    }
 
