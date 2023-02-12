@@ -75,42 +75,50 @@ class schedule {
          'Nov' : ['Ноября', 32 - new Date(this.date.getFullYear(), 10, 32).getDate()],
          'Dec' : ['Декабря', 32 - new Date(this.date.getFullYear(), 11, 32).getDate()]
       };
+      this.setDateInDayElem();
       this.setCurrentDay();
-      this.setDataInDayElem();
       this.replaceDays();
-      console.log(this.current_day_name)
+      console.log(this.date_string)
    }
 
    setCurrentDay() {
       days.days.forEach((day) => {
          if (day['mark'] == this.date_string.slice(0, 3)) {
             this.current_day_id = day['id'];
-            this.current_day_name = day['day'];
          }
       });
       document.querySelectorAll('.day').forEach((day_elem) => {
-         console.log($($(day_elem).children()[0]).children()[1])
-
+         if ($(day_elem).attr('day-date') == this.date_string.slice(4, 10)) {
+            this.current_day_elem = day_elem;
+            checkDayOpenClose(this.current_day_elem);
+         }
       });
    }
 
-   setDataInDayElem() {
+   setDateInDayElem() {
       let mounth = this.mounth_list[`${this.date_string.slice(4, 7)}`][0];
-      let day = this.date_string.slice(7, 10);
-      if (day.slice(1, 2) == '0') {
-         day = day.slice(2, 3)
+      let attr_mounth = Object.keys(this.mounth_list)[Object.keys(this.mounth_list).indexOf(`${this.date_string.slice(4, 7)}`)];
+      let day = this.date_string.slice(8, 10);
+      if (day.slice(0, 1) == '0') {
+         day = day.slice(1, 2)
       }
       let date_counter = day;
       document.querySelectorAll('.day-date').forEach((day_date) => {
-         day_date.innerHTML = date_counter + ' ' + mounth;
+         let day_elem = $($(day_date).parent()).parent()[0];
+         day_date.innerHTML = date_counter + ' ' + mounth; 
+         $(day_elem).attr('day-date', attr_mounth + ' ' + date_counter);
          if (date_counter < this.mounth_list[`${this.date_string.slice(4, 7)}`][1]) {
             date_counter++;
          } else {
             date_counter = 1;
-            mounth = this.mounth_list[`${Object.keys(this.mounth_list)[Object.keys(this.mounth_list).indexOf(`${this.date_string.slice(4, 7)}`) + 1]}`][0]
+            if (attr_mounth == 11) {
+               attr_mounth = 1;
+            } else {
+               attr_mounth = Object.keys(this.mounth_list)[Object.keys(this.mounth_list).indexOf(`${this.date_string.slice(4, 7)}`) + 1];
+            }
+            mounth = this.mounth_list[`${attr_mounth}`][0];
          }
       });
-      console.log(day + ' ' + mounth)
    }
 
    replaceDays() {
@@ -118,6 +126,66 @@ class schedule {
          days.days.shift();
          days.days.push(day);
       });
+   }
+
+   setPreviousWeek() {
+      console.log("previous-week")
+      let previous_week_current_day = this.current_day - 7;
+      let previous_week_current_mounth_id = Object.keys(this.mounth_list).indexOf(`${this.date_string.slice(4, 7)}`);
+      let previous_week_current_year = this.date_string.slice(11, 15);
+      if (previous_week_current_day <= 0 ) {
+         if (previous_week_current_mounth_id == 0) {
+            previous_week_current_mounth_id = 11;
+            previous_week_current_year -= 1; 
+         } else {
+            previous_week_current_mounth_id -= 1;
+         }
+         previous_week_current_day = this.mounth_list[`${Object.keys(this.mounth_list)[previous_week_current_mounth_id]}`][1] - 7;
+      }
+      this.date = new Date(previous_week_current_year, previous_week_current_mounth_id, previous_week_current_day);
+      this.date_string = this.date.toString();
+      this.setDateInDayElem();
+      this.replaceDays();
+   }
+
+   setCurrentWeek() {
+      console.log("current-week")
+      this.date = new Date();
+      this.date_string = this.date.toString();
+      this.setDateInDayElem();
+      this.replaceDays();
+   }
+
+   setNextWeek() {
+      console.log("next-week")
+      let next_week_current_day = this.current_day + 7;
+      let next_week_current_mounth_id = Object.keys(this.mounth_list).indexOf(`${this.date_string.slice(4, 7)}`);
+      let next_week_current_year = this.date_string.slice(11, 15);
+      if (next_week_current_day > this.mounth_list[`${Object.keys(this.mounth_list)[next_week_current_mounth_id]}`] ) {
+         if (next_week_current_mounth_id == 11) {
+            next_week_current_mounth_id = 0;
+            next_week_current_year += 1; 
+         } else {
+            next_week_current_mounth_id += 1;
+         }
+         next_week_current_day = 1;
+      }
+      this.date = new Date(next_week_current_year, next_week_current_mounth_id, next_week_current_day);
+      this.date_string = this.date.toString();
+      this.setDateInDayElem();
+      this.replaceDays();
+   }
+}
+
+function changeWeek(event) {
+   document.querySelector('.active-week').classList.remove('active-week');
+   event.target.classList.add('active-week');
+   if (event.target.classList.contains('previous-week')) {
+      window.current_schedule.setPreviousWeek();
+   } else if (event.target.classList.contains('current-week')) {
+      window.current_schedule.setCurrentWeek();
+   } else if (event.target.classList.contains('next-week')) {
+      window.current_schedule.setNextWeek();
    }
 }
 
@@ -143,7 +211,9 @@ function dayClose(target, events) {
    $(target).children()[1].classList.add('hide');
    $(target).children()[2].classList.add('hide');
    for (let i = 0; i < events.length; i++) {
-      events[i].classList.add('hide');
+      if (events[i].classList.contains('event')) {
+         events[i].classList.add('hide');
+      }
    }
    target.classList.remove('open-day');  
 }
@@ -166,7 +236,6 @@ function createEventArea(event, day) {
 function closeAreas() {
    document.body.style.overflow = "visible";
    document.querySelector('.background-form').classList.add('hide');
-   document.querySelector('.event-area').classList.add('hide');
    document.querySelector('.event-day-area').classList.add('hide');
    document.querySelector('.event-change-area').classList.add('hide');
    document.querySelector('.show-event').classList.add('hide');
@@ -179,13 +248,10 @@ function addEvent(day) {
    if ($(event.target).parent()[0].classList.contains('event-day-area')) {
       data['event_day'] = day;
       data['event_name'] = $($(event.target).parent()[0]).children()[1].value;
-   } else {
-      data['event_day'] = document.querySelector('.form-input-day').value;
-      data['event_name'] = document.querySelector('.form-input-name').value;
    }
    data['event-description'] = document.querySelector('.form-description').value;
    document.querySelectorAll('.day').forEach((day_elem) => {
-      if (day_elem.childNodes[0].innerText.toLowerCase() == data['event_day'].toLowerCase().trim()) {
+      if ($(day_elem.childNodes[0]).children()[1].innerText.toLowerCase() == data['event_day'].toLowerCase().trim()) {
          if (!day_elem.classList.contains('open-day')) {
             checkDayOpenClose(day_elem);
          }
@@ -288,7 +354,7 @@ function checkActivationCategories(event) {
 function filteringByCategory(event) {
    current_category_name = $(event.target).children()[0].innerHTML;
    document.querySelectorAll('.day').forEach((day) => {
-      events = $($(day).children()).children();
+      events = $($(day).children()[2]).children();
       dayClose(day, events)
    });
    document.querySelectorAll('.event').forEach((event) => {
@@ -297,6 +363,7 @@ function filteringByCategory(event) {
          if (current_category_name == category) {
             $($(event).parent()).parent()[0].classList.add('open-day');
             event.classList.remove('hide');
+            $(event).parent()[0].classList.remove('hide')
             $($($(event).parent()).parent()[0]).children()[1].classList.remove('hide');
          }
       });
@@ -432,10 +499,11 @@ function sendingChangedEvents(data) {
 function getData() {
    $.post("/get_data", 'hello', success = function(response) {
       renderEvents(JSON.parse(response));
+      window.current_schedule = new schedule();
       clickOnEvents();
 	});
-   getCategories('xb6q~{');
    main();
+   getCategories('xb6q~{');
 }
 
 function getCategories(param) {
@@ -497,7 +565,7 @@ function main() {
    });
    $('.create-event').click(createEventArea);
    $('.create-event-day').click(() => {
-      day = $($(event.target).parent()[0]).children()[0].innerHTML;
+      day = $($($(event.target).parent()[0]).children()[0]).children()[1].innerHTML;
       createEventArea(event, day);
    });
    $('.form-close').click(closeAreas);
@@ -505,7 +573,7 @@ function main() {
    $('.menu_add_class').click(createCategory);
    $('.sending-added-categories').click(sendingAddedCategories);
    $('.create-code').click(createCode);
-   window.current_schedule = new schedule();
+   $($($('.change-week')).children()).click(changeWeek);
 }
 
 document.addEventListener('DOMContentLoaded', getData);

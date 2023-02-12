@@ -367,6 +367,7 @@ body {
 }
 
 .create-code-block {
+    width: 20rem;
     display: flex;
     margin-top: 10px;
     margin-left: 2rem;
@@ -415,3 +416,22 @@ body {
     padding-top: 2rem;
     text-align: center;
  }
+
+.change-week {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.change-week div {
+    margin-left: 20px;
+    margin-right: 20px;
+} 
+
+.active-week {
+    transform: scale(1.2);
+}
+
+.active-week:hover {
+    transform: scale(1.3);
+}
