@@ -1,11 +1,11 @@
 from flask import Flask , render_template , make_response , request , session , redirect
 from . import core
-from schedule.app import app
+from schedule.application import application
 import json
 
 db = core.database.Database()
 
-@app.route('/', methods=['GET', 'POST'])
+@application.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'GET':
         if session:
@@ -21,7 +21,7 @@ def index():
         db.addEvent(data, session['id'])
         return ''
 
-@app.route('/auth', methods=['GET', 'POST'])
+@application.route('/auth', methods=['GET', 'POST'])
 def auth():
     if request.method == 'GET':
         return render_template('auth.html')
@@ -39,7 +39,7 @@ def auth():
         else:
             return 'Неправильный логин или пароль'
 
-@app.route('/reg', methods=['GET', 'POST'])
+@application.route('/reg', methods=['GET', 'POST'])
 def reg():
     if request.method == 'GET':
         return render_template('reg.html')
@@ -59,16 +59,16 @@ def reg():
         response = make_response(redirect(f"/"))
         return response
 
-@app.route("/get_data", methods=['GET', 'POST'])
+@application.route("/get_data", methods=['GET', 'POST'])
 def get_data():
     return json.dumps(db.loadEventsTable(session['id']))
 
-@app.route("/exit", methods=['GET', 'POST'])
+@application.route("/exit", methods=['GET', 'POST'])
 def exit():
     session = {}
     return ''
 
-@app.route("/changing_events", methods=['POST'])
+@application.route("/changing_events", methods=['POST'])
 def changing_events():
     data = {}
     data['event_id'] = request.form.get('event_id')
@@ -77,7 +77,7 @@ def changing_events():
     db.updateEvents(data)
     return '1'
 
-@app.route("/delete_event", methods=['GET', 'POST'])
+@application.route("/delete_event", methods=['GET', 'POST'])
 def delete_event():
     event_id = request.form.get('event_id')
     # print(event_id)
@@ -85,18 +85,18 @@ def delete_event():
     db.deleteEvents(event_id, session['id'])
     return event_id
 
-@app.route("/create_category", methods=['GET', 'POST'])
+@application.route("/create_category", methods=['GET', 'POST'])
 def create_category():
     category_name = request.form.get('category_name')
     print(category_name)
     db.createCategory(category_name, session['id'])
     return ''
 
-@app.route("/get_categories", methods=['GET', 'POST'])
+@application.route("/get_categories", methods=['GET', 'POST'])
 def get_categories():
     return json.dumps(db.loadCategoryTable(session['id']))
 
-@app.route("/create_categories_and_events", methods=['GET', 'POST'])
+@application.route("/create_categories_and_events", methods=['GET', 'POST'])
 def create_categories_and_events():
     event_id = request.form.get('event_id')
     category_ids = request.form.getlist('category_ids[]')
@@ -106,20 +106,20 @@ def create_categories_and_events():
         db.resemblanceСheckCategoryAndEvent(event_id, category_ids)
     return ''
 
-@app.route("/delete_category", methods=['GET', 'POST'])
+@application.route("/delete_category", methods=['GET', 'POST'])
 def delete_category():
     category_id = request.form.get('category_id')
     db.deleteCategory(category_id)
     return category_id
 
-@app.route("/save_code", methods=['GET', 'POST'])
+@application.route("/save_code", methods=['GET', 'POST'])
 def save_code():
     code = request.form.get('code')
     # print(code)
     db.saveCode(code, session['id'])
     return  ''
 
-@app.route("/save_code_to_event", methods=['GET', 'POST'])
+@application.route("/save_code_to_event", methods=['GET', 'POST'])
 def save_code_to_event():
     code = request.form.get('code')
     event_id = request.form.get('event_id')
