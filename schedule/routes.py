@@ -15,7 +15,7 @@ def index():
     else:
         data = {}
         data['event_name'] = request.form.get('event_name')
-        data['event_day'] = request.form.get('event_day')
+        data['event_date'] = request.form.get('event_date')
         data['event-description'] = request.form.get('event-description')
         # print(data)
         db.addEvent(data, session['id'])

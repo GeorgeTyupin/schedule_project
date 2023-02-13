@@ -61,6 +61,7 @@ class schedule {
       this.date_string = this.date.toString();
       this.current_day = this.date.getDate();
       this.current_day_id = 0;
+      this.events = [];
       this.mounth_list = {
          'Jan' : ['Января', 32 - new Date(this.date.getFullYear(), 0, 32).getDate()],
          'Feb' : ['Февраля', 32 - new Date(this.date.getFullYear(), 1, 32).getDate()],
@@ -76,7 +77,6 @@ class schedule {
          'Dec' : ['Декабря', 32 - new Date(this.date.getFullYear(), 11, 32).getDate()]
       };
       this.setDateInDayElem();
-      this.setCurrentDay();
       this.replaceDays();
       console.log(this.date_string)
    }
@@ -129,7 +129,6 @@ class schedule {
    }
 
    setPreviousWeek() {
-      console.log("previous-week")
       let previous_week_current_day = this.current_day - 7;
       let previous_week_current_mounth_id = Object.keys(this.mounth_list).indexOf(`${this.date_string.slice(4, 7)}`);
       let previous_week_current_year = this.date_string.slice(11, 15);
@@ -146,18 +145,19 @@ class schedule {
       this.date_string = this.date.toString();
       this.setDateInDayElem();
       this.replaceDays();
+      this.updateEventsInWeek()
    }
 
    setCurrentWeek() {
-      console.log("current-week")
       this.date = new Date();
       this.date_string = this.date.toString();
       this.setDateInDayElem();
       this.replaceDays();
+      this.updateEventsInWeek();
+      dayOpen(this.current_day_elem, $($(this.current_day_elem).children()[2]).children());
    }
 
    setNextWeek() {
-      console.log("next-week")
       let next_week_current_day = this.current_day + 7;
       let next_week_current_mounth_id = Object.keys(this.mounth_list).indexOf(`${this.date_string.slice(4, 7)}`);
       let next_week_current_year = this.date_string.slice(11, 15);
@@ -174,6 +174,14 @@ class schedule {
       this.date_string = this.date.toString();
       this.setDateInDayElem();
       this.replaceDays();
+      this.updateEventsInWeek()
+   }
+
+   updateEventsInWeek() {
+      $('.event').remove();
+      dayClose(this.current_day_elem, $($(this.current_day_elem).children()[2]).children());
+      renderEvents(this.events);
+      clickOnEvents();
    }
 }
 
@@ -246,7 +254,8 @@ function closeAreas() {
 
 function addEvent(day) {
    if ($(event.target).parent()[0].classList.contains('event-day-area')) {
-      data['event_day'] = day;
+      data['event_day'] = day.innerHTML;
+      data['event_date'] = $($($(day).parent()).parent()[0]).attr('day-date');
       data['event_name'] = $($(event.target).parent()[0]).children()[1].value;
    }
    data['event-description'] = document.querySelector('.form-description').value;
@@ -288,6 +297,7 @@ function createChangeEventArea(event_target) {
    document.querySelector('.show-event').classList.add('hide');
    document.querySelector('.event-change-area').classList.remove('hide');
    data['changed_description'] = $(event_target).attr('data-description');
+   $('.change-event').off('click');
    $('.change-event').click(() => {
       changeEvent(event_target);
    });
@@ -299,7 +309,7 @@ function changeEvent(event) {
    data['changed_name'] = document.querySelector('.form-change-name').value;
    data['changed_description'] = document.querySelector('.form-change-description').value;
    $(event).attr('data-name', document.querySelector('.form-change-name').value);
-   document.querySelector('.event-change-area').classList.add('hide');
+   closeAreas();
    sendingChangedEvents(data);
 }
 
@@ -412,7 +422,7 @@ function renderEvents(response) {
          })
       }
       document.querySelectorAll('.day').forEach((day) => {
-         if ($($(day).children()[0]).children()[1].innerText.toLowerCase() == event[3].toLowerCase()) {
+         if ($(day).attr('day-date') == event[3]) {
             $(day.childNodes[4]).append(`<div class="event hide" data-id="${event[0]}" data-name="${event[1]}" data-description="${event[5]}" data-categories="${categories.join(' ')}">${event[1]}</div>`);
          };
       });
@@ -498,8 +508,10 @@ function sendingChangedEvents(data) {
 
 function getData() {
    $.post("/get_data", 'hello', success = function(response) {
-      renderEvents(JSON.parse(response));
       window.current_schedule = new schedule();
+      renderEvents(JSON.parse(response));
+      window.current_schedule.events = JSON.parse(response);
+      window.current_schedule.setCurrentDay();
       clickOnEvents();
 	});
    main();
@@ -527,6 +539,7 @@ function sendingAddedCategories() {
    });
    console.log(data)
    $.post("/create_categories_and_events", data, success = function(response) {});
+   closeAreas();
 }
 
 function sendingCode(code) {
@@ -565,7 +578,7 @@ function main() {
    });
    $('.create-event').click(createEventArea);
    $('.create-event-day').click(() => {
-      day = $($($(event.target).parent()[0]).children()[0]).children()[1].innerHTML;
+      day = $($($(event.target).parent()[0]).children()[0]).children()[1];
       createEventArea(event, day);
    });
    $('.form-close').click(closeAreas);

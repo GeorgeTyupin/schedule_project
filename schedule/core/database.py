@@ -19,7 +19,7 @@ class Database():
          values = {
             'name' : data['event_name'],
             'author_id' : str(author_id),
-            'date' : data['event_day'],
+            'date' : data['event_date'],
             'time' : str(time.time()),
             'description' : data['event-description']
          }
