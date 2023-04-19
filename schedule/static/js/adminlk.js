@@ -52,7 +52,7 @@ var days = new Vue({
       }
      ]
    }
- });
+});
 
 class schedule {
    constructor() {
@@ -77,13 +77,13 @@ class schedule {
          'Dec' : ['Декабря', 32 - new Date(this.date.getFullYear(), 11, 32).getDate()]
       };
       this.setDateInDayElem();
-      this.replaceDays();
       console.log(this.date_string)
    }
 
    setCurrentDay() {
       days.days.forEach((day) => {
          if (day['mark'] == this.date_string.slice(0, 3)) {
+            console.log(day['id'])
             this.current_day_id = day['id'];
          }
       });
@@ -121,6 +121,7 @@ class schedule {
       });
    }
 
+   //тут ошибка
    replaceDays() {
       days.days.slice(0, this.current_day_id).forEach((day) => {
          days.days.shift();
@@ -144,7 +145,6 @@ class schedule {
       this.date = new Date(previous_week_current_year, previous_week_current_mounth_id, previous_week_current_day);
       this.date_string = this.date.toString();
       this.setDateInDayElem();
-      this.replaceDays();
       this.updateEventsInWeek()
    }
 
@@ -152,7 +152,6 @@ class schedule {
       this.date = new Date();
       this.date_string = this.date.toString();
       this.setDateInDayElem();
-      this.replaceDays();
       this.updateEventsInWeek();
       dayOpen(this.current_day_elem, $($(this.current_day_elem).children()[2]).children());
    }
@@ -173,7 +172,6 @@ class schedule {
       this.date = new Date(next_week_current_year, next_week_current_mounth_id, next_week_current_day);
       this.date_string = this.date.toString();
       this.setDateInDayElem();
-      this.replaceDays();
       this.updateEventsInWeek()
    }
 
@@ -512,6 +510,7 @@ function getData() {
       renderEvents(JSON.parse(response));
       window.current_schedule.events = JSON.parse(response);
       window.current_schedule.setCurrentDay();
+      window.current_schedule.replaceDays();
       clickOnEvents();
 	});
    main();
